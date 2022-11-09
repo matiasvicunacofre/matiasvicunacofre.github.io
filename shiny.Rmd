@@ -1,79 +1,29 @@
 ---
-title: "Como ejecutar una Shiny app con un boton"
-output: 
-  flexdashboard::flex_dashboard:
-    orientation: columns
-    social: menu
-    source_code: embed
+title: "A Shiny Document"
+output: html_document
 runtime: shiny
 ---
 
-```{r global, include=FALSE}
-#Cargo mis librerias y con source llamo al script que me hace todos los calculos
-library(readxl)
-library(DT)
-library(dplyr)
+A standard R plot can be made interactive by wrapping
+it in the Shiny `renderPlot()` function. The `selectInput()`
+function creates the input widget to drive the plot.
+
+```{r setup, echo=FALSE}
+library(shiny)
 ```
 
-Inputs {.sidebar}
------------------------------------------------------------------------
+```{r eruptions, echo=FALSE}
+selectInput(
+  'breaks', label = 'Number of bins:',
+  choices = c(10, 20, 35, 50), selected = 20
+)
 
-```{r}
-#Subo mis 2 archivos 
-fileInput("file1", "Archivo1", accept = ".xlsx")
-
-fileInput("file2", "Archivo2", accept = ".xlsx")
-
-actionButton("ejecutar", "Ejecutar")
-```
-
-Outputs
------------------------------------------------------------------------
-
-### Chart B
-
-```{r}
-#Muestro con Render, mis 2 archivos en la interfaz y funciona perfecto
-df1<-eventReactive(input$file1,{
-  file <- input$file1
-    ext <- tools::file_ext(file$datapath)
-
-    req(file)
-    validate(need(ext == "xlsx", "Please upload a Excel file"))
-
-    read_excel(file$datapath, 1)
-  })
-
-renderDT(df1())
-```
-
-### Chart C
-
-```{r}
-#Muestro con Render, mis 2 archivos en la interfaz y funciona perfecto
-df2<-eventReactive(input$file2,{
-  file <- input$file2
-    ext <- tools::file_ext(file$datapath)
-
-    req(file)
-    validate(need(ext == "xlsx", "Please upload a Excel file"))
-
-    read_excel(file$datapath, 1)
-  })
-
-renderDT(df2())
-```
-
-### Chart D
-
-```{r}
-#Controlamos cuando ejecutar el calculo con el actionButton
-observeEvent(input$ejecutar,{
-
-  #Hacemos un calculo con las variables
-  aux<-data.frame(z=df1()[,1]*df2()[,1])
-  output$resultado<-renderDT(aux)
+renderPlot({
+  par(mar = c(4, 4, .1, .5))
+  hist(
+    faithful$eruptions, as.numeric(input$breaks),
+    col = 'gray', border = 'white',
+    xlab = 'Duration (minutes)', main = ''
+  )
 })
-
-DTOutput("resultado")
 ```

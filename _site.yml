@@ -7,8 +7,6 @@ navbar:
       href: index.html
     - text: "Documentación"
       href: about.html
-    - text: "Shiny"
-      href: shiny.html
 output:
   html_document:
     theme: united

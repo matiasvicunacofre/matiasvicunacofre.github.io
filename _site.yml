@@ -11,8 +11,8 @@ navbar:
       href: shiny.html
 output:
   html_document:
-    theme: united
-    highlight: textmate
+    theme: spacelab
+    highlight: tango
     include:
       after_body: footer.html
     css: styles.css

@@ -1,11 +1,11 @@
 name: "my-website"
 output_dir: "."
 navbar:
-  title: "My Website"
+  title: "Matías Vicuña Cofré"
   left:
-    - text: "Home"
+    - text: "Inicio"
       href: index.html
-    - text: "About"
+    - text: "Documentación"
       href: about.html
 output:
   html_document:

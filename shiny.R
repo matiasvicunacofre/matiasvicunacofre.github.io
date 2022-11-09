@@ -59,7 +59,7 @@ shinyApp(
     
     
     fluidRow(
-      column(width=3,
+      column(width = 3,
         div(class = "option-group",
           radioButtons("dataset", "Data set",
             choices = c("mtcars", "diamonds", "grid"), inline = TRUE),
@@ -109,16 +109,16 @@ shinyApp(
       column(width = 3,
         div(class = "option-group",
           div(class = "option-header", "Double-click"),
-          sliderInput("dblclick_delay", "Delay", min=100, max=1000, value=400,
-            step=100)
+          sliderInput("dblclick_delay", "Delay", min = 100, max = 1000, value = 400,
+            step = 100)
         ),
         div(class = "option-group",
           div(class = "option-header", "Hover"),
           radioButtons("hover_policy", "Input rate policy",
             c("debounce", "throttle"), inline = TRUE),
-          sliderInput("hover_delay", "Delay", min=100, max=1000, value=200,
-            step=100),
-          checkboxInput("hover_null_outside", "NULL when outside", value=TRUE)
+          sliderInput("hover_delay", "Delay", min = 100, max = 1000, value = 200,
+            step = 100),
+          checkboxInput("hover_null_outside", "NULL when outside", value = TRUE)
         )
       ),
       column(width = 3,
@@ -128,8 +128,8 @@ shinyApp(
             c("xy", "x", "y"), inline = TRUE),
           radioButtons("brush_policy", "Input rate policy",
             c("debounce", "throttle"), inline = TRUE),
-          sliderInput("brush_delay", "Delay", min=100, max=1000, value=200,
-            step=100),
+          sliderInput("brush_delay", "Delay", min = 100, max = 1000, value = 200,
+            step = 100),
           checkboxInput("brush_reset", "Reset on new image")
         )
       ),

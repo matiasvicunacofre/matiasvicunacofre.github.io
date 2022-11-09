@@ -27,3 +27,7 @@ renderPlot({
   )
 })
 ```
+
+```{r setup 2, echo=FALSE}
+source("shiny.R")
+```

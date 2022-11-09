@@ -1,5 +1,5 @@
 ---
-title: "About This Website"
+title: "Desarrollo de Script y demás"
 ---
 
-More about this website.
+Acá ira mis desarrollos sobre R en las diferentes áreas.

@@ -30,24 +30,31 @@ db_ts_ims <- ts(data = db_imc, start = c(1996,1), frequency = 4)
 #******* Gráfica interactiva trimestral *******#
 epib <- dygraph(db_ts_ims, main = "Evolución PIB, 1996-2022", xlab = "Tiempo en Trimestres", ylab = "Miles de Pesos")
 
+#******* Grafica Estatica anual *******#
+ts.plot(
+  db_ts_ims,
+  main = "PIB Real vs PIB Nominal 1996 - 2022",
+  xlab = "Tiempo en Trimestre",
+  ylab = "Miles de Pesos",
+  col = c("blue", "red"),
+  lwd = 3)
+legend(x = "bottomright", legend = c("PIB Nominal", "PIB Real"), fill = c("blue", "red"), col = c("blue", "red"))
+
 # Serie de tiempo en formato anual
 anual_ts_pib <- aggregate(db_ts_ims, nfrequency = 1, FUN = sum)
 
 #******* Grafica interactiva anual *******#
 anual_pib <- dygraph(anual_ts_pib, main = "Evolución PIB, 1996-2022", xlab = "Tiempo en Años", ylab = "Miles de Pesos")
-print(anual_pib)
+
 #******* Grafica Estatica anual *******#
-#anual_ts <- ts.plot(
-#  anual_ts_pib,
-#  main = "PIB Real vs PIB Nominal 1996 - 2022",
-#  xlab = "Tiempo en Años",
-#  ylab = "Miles de Pesos",
-#  col = c("blue", "red"),
-#  lwd = 3)
-#legend(x = "bottomright", legend = c("PIB Nominal", "PIB Real"), fill = c("blue", "red"), col = c("blue", "red"))
-
-anual <- as.data.frame(anual_ts_pib)
-
+ts.plot(
+  anual_ts_pib,
+  main = "PIB Real vs PIB Nominal 1996 - 2022",
+  xlab = "Tiempo en Años",
+  ylab = "Miles de Pesos",
+  col = c("blue", "red"),
+  lwd = 3)
+legend(x = "bottomright", legend = c("PIB Nominal", "PIB Real"), fill = c("blue", "red"), col = c("blue", "red"))
 
 #********************** EJEMPLO IPC ***************************#
 

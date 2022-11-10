@@ -12,7 +12,7 @@ navbar:
 output:
   html_document:
     theme: spacelab
-    highlight: tango
+    highlight: default
     include:
       after_body: footer.html
     css: styles.css

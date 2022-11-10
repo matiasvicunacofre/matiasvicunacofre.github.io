@@ -2,4 +2,13 @@
 title: "Desarrollo de Script y demás"
 ---
 
-Acá ira mis desarrollos sobre R en las diferentes áreas.
+```{r setup, include=FALSE}
+library(tidyverse)
+library(modeldata)
+library(readxl)
+library(esquisse)
+```
+
+```{r primer script, echo=FALSE}
+source("Ayudantía 1.R")
+```

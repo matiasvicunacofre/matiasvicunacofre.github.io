@@ -5,3 +5,21 @@ title: "Matías Vicuña Cofré"
 ![](images/IMG_7249.jpg){width="30%"}
 
 Soy estudiante de Ingeniería Comercial mención en Economía de la Universidad Alberto Hurtado. Me interesan las Finanzas Cuantitativas, Finanzas Conductuales y la Econometría, además de ello, he sido ayudante en varias cátedras en las carreras de Ingeniería Comercial Diurno, Ingeniería Comerial para Profesionales, Ingeniería en Control de Gestión y Contador Público Auditor. entre las ayudantías que realicé están; Finanzas Corporativas, Evaluación de Proyectos, Introducción a la Economía, Modelos de Regresión Múltiple en R y Historia Económica y de la Empresa. Además de ello, he sido Asistente de Investigación en el área de Finanzas Corporativas, en dónde actualmente colaboro junto al Ph.D Tiago Alves Ferreira, también soy asistente de Laboratorio en el proyecto de la Facultad de Economía y Negocios de la UAH.
+
+# Experiencias
+
+1.   Ayudantías de Cátedra y Correctivas en diferentes áreas, entre ellas:
+
+-   Finanzas Corporativas.
+
+-   Evaluación de Proyectos.
+
+-   Microeconomía.
+
+-   Principios de Macroeconomía.
+
+-   Modelo Econométricos en R y Rstudio.
+
+-   Historia de la Economía y de la Empresa.
+
+-   Ayudantía del laboratorio de la Facultad de Economía y Negocios.

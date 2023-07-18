@@ -15,9 +15,26 @@ Licenciado en Economía de la Universidad Alberto Hurtado, Estudiante de Ingenie
 
 Actualemente soy asistente de Investigación y de Laboratorio en la UAH, además de realizar diversas cátedras en las carreras de Ingeniería Comercial Diurno, Vespertino, Ingeniería en Control y Gestión y Contador Público y Auditor.
 
-# Experiencias
+\vspace{5mm}
 
-1.  Ayudantías de Cátedra y Correctivas en diferentes áreas, entre ellas:
+# Experiencias Profesionales
+
+- Asistente de Laboratorio - Universidad Alberto Hurtado:
+  Recopilación de datos de cuentas financieras desde Economatica para la investigación y la docencia. Proyecto dirigido por el Ph.D Tiago Alves Ferreira, aplicación de R, STATA y Excel.
+
+- Asistente de Investigación - Universidad Alberto Hurtado:
+  Trabajo junto al Ph.D Tiago Alves Ferreira de la UAH y el Ph.D(c) Leonardo Brioschi de FUCAPE Business School. Recopilación y manejo de bases de datos financieras desde Economatica, utilizando STATA, R y Excel.
+  
+- Asitente de Investigación - Universidad Alberto Hurtado:
+  Trabajo junto al Ph.D Fernando Lopez. Recopilación y formulación estadítica de respuestas de        encuestas financieras a trabajadores/as, aplicación de STATA y Excel.
+
+\vspace{10mm}
+
+\newline
+
+# Experiencia Académica
+
+##  Ayudantías de Cátedra y Correctivas:
 
 -   Finanzas Corporativas.
 
@@ -32,3 +49,5 @@ Actualemente soy asistente de Investigación y de Laboratorio en la UAH, además
 -   Historia de la Economía y de la Empresa.
 
 -   Ayudantía del laboratorio de la Facultad de Economía y Negocios.
+
+

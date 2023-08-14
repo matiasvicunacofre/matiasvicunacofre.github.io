@@ -1,7 +1,6 @@
 ---
 title: "Gráficas Interactivas"
 output: html_document
-runtime: shiny
 ---
 
 

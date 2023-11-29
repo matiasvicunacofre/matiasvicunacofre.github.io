@@ -1,34 +1,19 @@
 ---
-title: "Gráficas Interactivas"
+title: "Shiny"
 output: html_document
 ---
 
 
-```{r setup, echo=FALSE}
+```{r setup, echo=FALSE,message=FALSE,warning=FALSE}
 suppressPackageStartupMessages({
-library(readxl)
+library(haven)
 library(tidyverse)
-library(lubridate)
-library(geomtextpath)
-library(plotly)
-library(xts)
-library(zoo)
-library(dygraphs)
-library(gganimate)
-library(plotly)
-library(esquisse)
+library(shinylive)
+library(shiny)
 })
 
-#********************** EJEMPLO PIB ***************************#
-# Visualizar la data
-db_imc <- read_xlsx("Ayudantía 1.1.xlsx", sheet = "DATOS PIB")
-db_imc$Periodo <- NULL
-db_imc$`Deflactor PIB` <- NULL
+setwd("~/Pagina_MVC/matiasvicunacofre.github.io/myapp")
 
-# Time-Series trimestral
-db_ts_ims <- ts(data = db_imc, start = c(1996,1), frequency = 4)
-
-#******* Gráfica interactiva trimestral *******#
-dygraph(db_ts_ims, main = "Evolución PIB, 1996-2022", xlab = "Tiempo en Trimestres", ylab = "Miles de Pesos")
+shinylive::export()
 
 ```

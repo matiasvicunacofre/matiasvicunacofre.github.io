@@ -1,10 +1,25 @@
 ---
-title: "Desarrollo de Script y demás"
+title: "Portfolio"
 ---
 
-```{r setup, include=FALSE}
-library(tidyverse)
-library(modeldata)
-library(readxl)
-library(esquisse)
-```
+\vspace{20mm}
+
+## Macroeconometrics
+
+(EN)
+In this section I develop some codes on macroeconomics, specifically time series, AR, VAR, MA and other models.
+
+(ES)
+En este apartado desarrollo algunos códigos sobre macroeconomía, especificamente series de tiempo, modelos AR, VAR, MA y demás.
+
+[Página/Page](https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics)
+
+## Modeling Multivariate
+
+(EN)
+Development of Multiple Regression Models, using R for analysis and interpretation.
+
+(ES)
+Desarrollo de Modelos de Regresión Múltiple, utilizando R para el análisis e interpretación.
+
+[Página/Page](https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate)

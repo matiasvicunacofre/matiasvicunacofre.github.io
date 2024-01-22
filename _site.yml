@@ -5,14 +5,13 @@ navbar:
   left:
     - text: "Inicio"
       href: index.html
-    - text: "Documentación"
+    - text: "Portafolio"
       href: about.html
-    - text: "Shiny"
-      href: shiny.html
+      
 output:
   html_document:
-    theme: spacelab
-    highlight: default
+    theme: cosmo
+    highlight: textmate
     include:
       after_body: footer.html
     css: styles.css

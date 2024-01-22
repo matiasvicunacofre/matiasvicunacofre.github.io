@@ -11,14 +11,14 @@ library(DT)
 library(tidyverse)
 library(haven)
 
-# Establece el directorio de trabajo
-# setwd("C:/Users/Casa/Dropbox/2- Trabajo/Shiny_Tiago_R/datasets")
-# setwd("~/Datos_Matias_CMF/datasets")
-# 
-# Predeterminar la ubicación dónde se encuentran los datos en formato .dta
-# setwd("C:/Users/matias/Dropbox/2- Trabajo/Trabajos_Tiago/Datos_Tiago_CMF/Bases/") # Ub. Notebook
-setwd("C:/Users/matei/Dropbox/2- Trabajo/Trabajos_Tiago/Shiny_Tiago_R/datasets") # Ub. Torre
+# Paquetes
+library(shiny)
+library(DT)
+library(tidyverse)
+library(haven)
 
+# Predeterminar la ubicación dónde se encuentran los datos en formato .dta
+setwd("C:/Users/matei/Dropbox/2- Trabajo/Trabajos_Tiago/Shiny_Tiago_R/datasets")
 
 # Define el servidor
 server <- function(input, output, session) {
@@ -44,15 +44,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(session, "cuenta", choices = unique(data$cuenta), server = TRUE)  # Cambiado a selectizeInput
   })
   
-  observeEvent(input$actualizar, {
-    loaded_data(load_data(input$base))
-  })
-  
-  output$alert_text <- renderText({
-    "La base se encuentra ya cargada y disponible"
-  })
-  
-  filtered_data <- reactive({
+  filtered_data <- eventReactive(input$actualizar, {
     data <- loaded_data()
     
     if (is.null(data)) {
@@ -92,6 +84,7 @@ server <- function(input, output, session) {
     if (!is.null(input$quarter) && length(input$quarter) > 0) {
       filtered <- filtered %>% filter(quarter %in% input$quarter)
     }
+    
     return(filtered)
   })
   
@@ -103,7 +96,7 @@ server <- function(input, output, session) {
         filtered,
         options = list(
           scrollX = TRUE,  # Barras de desplazamiento horizontal
-          scrollY = "650px"  # Altura máxima de la tabla
+          scrollY = "633px"  # Altura máxima de la tabla
         )
       )
     }
@@ -112,7 +105,7 @@ server <- function(input, output, session) {
   # Permite descargar la tabla filtrada en formato CSV
   output$download_csv <- downloadHandler(
     filename = function() {
-      paste("data_cmf_", Sys.Date(), ".csv", sep="")
+      paste("data_cmf_", Sys.Date(), ".csv", sep = "")
     },
     content = function(file) {
       write.csv(filtered_data(), file, row.names = FALSE)
@@ -122,7 +115,7 @@ server <- function(input, output, session) {
   # Permite descargar la tabla filtrada en formato .dta
   output$download_dta <- downloadHandler(
     filename = function() {
-      paste("data_cmf_", Sys.Date(), ".dta", sep="")
+      paste("data_cmf_", Sys.Date(), ".dta", sep = "")
     },
     content = function(file) {
       write_dta(filtered_data(), file)
@@ -132,7 +125,7 @@ server <- function(input, output, session) {
   # Permite descargar la tabla filtrada en formato .txt
   output$download_txt <- downloadHandler(
     filename = function() {
-      paste("data_cmf_", Sys.Date(), ".txt", sep="")
+      paste("data_cmf_", Sys.Date(), ".txt", sep = "")
     },
     content = function(file) {
       write.table(filtered_data(), file, sep = "\t", row.names = FALSE)
@@ -165,10 +158,9 @@ ui <- fluidPage(
     ),
     mainPanel(
       DT::dataTableOutput("table"),
-      downloadButton("download_csv", "Descargar CSV"),
-      downloadButton("download_dta", "Descargar Stata Dataset"),
-      downloadButton("download_txt", "Descargar Texto Plano"),
-      textOutput("alert_text")
+      downloadButton("download_csv", "Descargar (.csv)"),
+      downloadButton("download_dta", "Descargar (.dta)"),
+      downloadButton("download_txt", "Descargar (.txt)"),
     )
   )
 )

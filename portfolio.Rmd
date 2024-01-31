@@ -23,3 +23,13 @@ Development of Multiple Regression Models, using R for analysis and interpretati
 Desarrollo de Modelos de Regresión Múltiple, utilizando R para el análisis e interpretación.
 
 [Página/Page](https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate)
+
+## Portfolio Optimization
+
+(EN)
+Development of Multiple Regression Models, using R for analysis and interpretation.
+
+(ES)
+Desarrollo de Modelos de Regresión Múltiple, utilizando R para el análisis e interpretación.
+
+[Página/Page](optimization_portfolio.html)

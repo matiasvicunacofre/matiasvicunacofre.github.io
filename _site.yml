@@ -6,7 +6,7 @@ navbar:
     - text: "Inicio"
       href: index.html
     - text: "Portafolio"
-      href: about.html
+      href: portfolio.html
       
 output:
   html_document:

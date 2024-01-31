@@ -1,15 +1,18 @@
 ---
-title: "Optimización Cartera"
+title: "Optimización de Cartera"
 author: "Matías Vicuña Cofré"
 date: "`r Sys.Date()`"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.width = 8, fig.height = 6, message = FALSE, warning = FALSE)
+# **Configuraciones Iniciales para R**
+
+Antes de comenzar con nuestra optimización de cartera, utilizando la teoría del portafolio de Markowitz, designaremos las configuraciones iniciales para el trabajo, comenzando con la verificación, instalación y carga de los paquetes a utilizar para el caso, luego de ello, al mismo tiempo hacemos unas configuraciones aparte para el entorno de trabajo propiamente tal (no es necesario para el markdown, sin embargo, para aquellos que quieran replicar el modelo, les sea útil), con esto todo
+
+```{r setup, include=TRUE, message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.width = 10, fig.height = 8, message = FALSE, warning = FALSE)
 #############################################################################
 # Portfolio Opimization
-# Financial Inferences 
 # Author: Matías Vicuña Cofré
 #############################################################################
 #******************** Configuraciones e Inicializacion *********************#
@@ -18,7 +21,9 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
   # Librerías
   {
     # Lista de paquetes que quieres verificar
-    paquetes <- c("tidyverse","readxl","janitor","skimr","scales","ggthemes","tseries","fPortfolio","knitr","kableExtra","gplots")
+    paquetes <- c("tidyverse","readxl","janitor","skimr","scales","ggthemes",
+                  "tseries","fPortfolio","knitr","kableExtra","gplots",
+                  "plotly", "lubridate")
     
     # Verificar e instalar paquetes que no estén instalados
     for (paquete in paquetes) {
@@ -40,6 +45,8 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
       library(fPortfolio)
       library(knitr)
       library(kableExtra)
+      library(plotly)
+      library(lubridate)
     })
   }
   # Configuraciones Entorno de Trabajo
@@ -59,25 +66,188 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
 }
 ```
 
-## R Markdown
+# **Comenzando el Modelo**
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Luego de las configuraciones, generamos la primera muestra de datos a utilizar, usando el paquete `tseries`, como primer ejemplo, utilizaremos el índice S&P 500 Dow Jones, al cuál observaremo su precio histórico desde Enero del 2000 hasta el 31 de diciembre del 2023, usaremos su ticket de Yahoo Finance (^GSPC) (veáse más detalle del índice [*aquí*](https://finance.yahoo.com/quote/%5EGSPC?p=%5EGSPC)).
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Junto con ello, usamos el paquete `skimr` para realizar un análisis estadístico básico de la serie con los precios históricos, teniendo su media, percentiles y demás detalles.
 
-```{r cars}
-# Modelo de Markowitz
-
-# Series de tiempo
-Indice <- get.hist.quote(
+```{r SP_load}
+# Carga serie S&P 500.
+SP500 <- get.hist.quote(
   instrument = "^GSPC",
-  start = as.Date("2010-01-04"),
-  end = as.Date("2020-04-30"),
+  start = as.Date("2000-01-01"),
+  end = as.Date("2023-12-31"),
   quote = "AdjClose"
 )
-plot(Indice,
-     col = "deepskyblue",
-     xlab = "Fecha",
-     ylab = "AdjClose")
-title(main = "Histórico del Índice S&P 500 [2010-2020]")
+
+# Renombramos la base original
+colnames(SP500) <- "SP500"
+
+# Ajustamos la muestra
+SP_500 <- SP500 %>%
+  as_tibble() %>% 
+  mutate(Fecha = as_date(time(SP500))) %>% 
+  rename(Precio = SP500)
+
+# Generamos tabla resumen de precios históricos
+knitr::kable(skim_without_charts(SP_500$Precio), align = "c", format = "html")
 ```
+
+\vspace{10mm}
+
+Ya teniendo la serie cargada, generamos ahora un pequeño gráfico que entrega el rendimiento histórico desde el 2000 al 2023 del precio ajustado del indicador.
+
+Para ello, hacemos uso de un recursos super relevantes para el análisis y visualización de datos: `ggplot2`, con este paquete y usando de adicional para la interacción el paquete `plotly`, tenemos un gráfico que nos entrega en detalle e intuitivamente el desarrollo de este mercado Norteamericano.
+
+
+```{r plot_SP500, fig.height=5}
+# Generamos el gráfico
+int_plot_SP500 <- SP_500 %>%
+  ggplot(mapping = aes(x = Fecha,
+                       y = Precio)) +
+  geom_line(aes(y = Precio),
+            color = "blue4") +
+  labs(x = "Años",
+       y = "Precio $USD",
+       title = "Precio Ajustado S&P 500",
+       subtitle = "En dólares") +
+  
+  theme_minimal() +
+  theme(axis.title.x = element_text(size = 12, 
+                                    face = "bold"),
+        axis.title.y = element_text(size = 12, 
+                                    face = "bold"),
+        plot.title = element_text(size = 20,
+                                  face = "bold", 
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 20,
+                                  face = "bold", 
+                                  hjust = 0.5))
+
+# Generamos el gráfico de forma interactiva
+ggplotly(int_plot_SP500)
+```
+
+Siguiendo con esta ídea, ahora generaremos una cartera, la cuál se compondrá de a lo menos 10 tipos de empresas, para este ejemplo, usaremos empresas que cotizan en la bolsa de Nueva York, especificamente serán las siguientes:
+
+- Coca Cola (KO)
+- Pepsi Cola (PEP)
+- Johnson and Johnson (JNJ)
+- Walmart (WMT)
+- Target (TGT)
+- Apple (AAPL)
+- Microsoft (MSFT)
+- Amazon (AMZN)
+
+Con este listado de empresas, ahora construiremos nuestra base.
+
+# **Consolidando la cartera**
+
+```{r Portafolio_Generacion}
+# Datos Previos
+tickets <- c("KO", "PEP", "JNJ", "WMT", "TGT", "AAPL", "MSFT", "AMZN")
+portafolio <- tibble()
+start_port <- as.Date("2000-01-01")
+end_port <- as.Date("2023-12-31")
+
+# Iteración de Recopilación de Series
+for (i in seq_along(tickets)) {
+  data <- get.hist.quote(
+    instrument = tickets[i],
+    start = start_port,
+    end = end_port,
+    quote = "Adjusted"
+  )
+
+  # Verifica si el objeto portafolio está vacío
+  if (nrow(portafolio) == 0) {
+    portafolio <- data
+  } else {
+    # Combina las series temporales por columna
+    portafolio <- cbind(portafolio, data)
+  }
+}
+
+# Asigna nombres de columna al portafolio
+colnames(portafolio) <- tickets
+
+# Extraemos la fecha de la base (para gráficar)
+Fecha <- time(portafolio)
+
+# Imprime el resultado
+head(portafolio)
+```
+
+Teniendo ya conformada la cartera, visualizamos la evolución histórica de cada serie
+
+```{r Grafico_Portafolio, fig.height=8.5}
+# Creamos un reshape "wide to long" para facilitar la graficación
+portafolio_long <- cbind(Fecha,as_tibble(portafolio)) %>%
+  gather(key = "Ticket", value = "Precio", -Fecha)
+
+# Creamos el gráfico de series de tiempo
+int_plot_portafolio <- ggplot(portafolio_long, 
+                              aes(x = Fecha, y = Precio, group = Ticket, color = Ticket)) +
+  geom_line(aes(y = Precio)) +
+  facet_wrap(~Ticket, scales = "free_y") +
+  labs(title = "Evolución Histórica",
+       x = "Fecha", y = "Precio $USD") +
+  scale_color_calc() +
+  theme_minimal() +
+  theme(axis.title.x = element_text(size = 15, face = "bold"),
+        axis.title.y = element_text(size = 15, face = "bold"),
+        plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
+        axis.text.x = element_text(face = "bold", vjust = 1),
+        legend.position = "none")
+  
+# Agregamos la interacción
+ggplotly(int_plot_portafolio)
+```
+
+Posterior a esto, crearemos los beneficios de cada serie (incluida el S&P 500), añadiendo además una normalización logartímica para reescalar la muestra.
+
+```{r diff_port}
+
+# Diferenciamos la cartera
+dif_log_portafolio <- round(diff(log(portafolio)), digits = 6)
+head(dif_log_portafolio)
+
+# Diferenciamos el indice S&P 500
+dif_log_SP500 <- round(diff(log(SP500)), digits = 6)
+head(dif_log_SP500)
+```
+
+Gráficamente esto se ve de la siguiente manera:
+
+```{r}
+# Ajustes a la muestra (formateo de zoo a tibble)
+port_SP_long <- merge(dif_log_portafolio,dif_log_SP500)
+Time_diff <- time(port_SP_long)
+
+# Creamos un reshape "wide to long" para facilitar la graficación
+port_SP_long <- cbind(Time_diff,as_tibble(port_SP_long)) %>%
+  gather(key = "Serie", value = "Precio", -Time_diff)
+
+# Creamos el gráfico de series de tiempo
+int_plot_port_SP_dif <- ggplot(port_SP_long, 
+                              aes(x = Time_diff, 
+                                  y = Precio, 
+                                  group = Serie, 
+                                  color = Serie)) +
+  geom_line(aes(y = Precio)) +
+  facet_wrap(~Serie, scales = "free_y") +
+  labs(title = "Evolución Histórica",
+       x = "Fecha", y = "Precio $USD") +
+  scale_color_calc() +
+  theme_minimal() +
+  theme(axis.title.x = element_text(size = 15, face = "bold"),
+        axis.title.y = element_text(size = 15, face = "bold"),
+        plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
+        axis.text.x = element_text(face = "bold", vjust = 1),
+        legend.position = "none")
+  
+# Agregamos la interacción
+ggplotly(int_plot_port_SP_dif)
+```
+

@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
     # Lista de paquetes que quieres verificar
     paquetes <- c("tidyverse","readxl","janitor","skimr","scales","ggthemes",
                   "tseries","fPortfolio","knitr","kableExtra","gplots",
-                  "plotly", "lubridate")
+                  "plotly", "lubridate","gplots","formattable")
     
     # Verificar e instalar paquetes que no estén instalados
     for (paquete in paquetes) {
@@ -47,6 +47,8 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
       library(kableExtra)
       library(plotly)
       library(lubridate)
+      library(gplots)
+      library(formattable)
     })
   }
   # Configuraciones Entorno de Trabajo
@@ -91,7 +93,7 @@ SP_500 <- SP500 %>%
   rename(Precio = SP500)
 
 # Generamos tabla resumen de precios históricos
-knitr::kable(skim_without_charts(SP_500$Precio), align = "c", format = "html")
+formattable(skim_without_charts(SP_500$Precio))
 ```
 
 \vspace{10mm}
@@ -220,7 +222,7 @@ head(dif_log_SP500)
 
 Gráficamente esto se ve de la siguiente manera:
 
-```{r}
+```{r Plot_rendimientos}
 # Ajustes a la muestra (formateo de zoo a tibble)
 port_SP_long <- merge(dif_log_portafolio,dif_log_SP500)
 Time_diff <- time(port_SP_long)
@@ -237,17 +239,66 @@ int_plot_port_SP_dif <- ggplot(port_SP_long,
                                   color = Serie)) +
   geom_line(aes(y = Precio)) +
   facet_wrap(~Serie, scales = "free_y") +
-  labs(title = "Evolución Histórica",
+  labs(title = "Variación Precios Histórica Normalizada",
        x = "Fecha", y = "Precio $USD") +
   scale_color_calc() +
   theme_minimal() +
-  theme(axis.title.x = element_text(size = 15, face = "bold"),
-        axis.title.y = element_text(size = 15, face = "bold"),
-        plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
+  theme(axis.title.x = element_text(size = 13, face = "bold"),
+        axis.title.y = element_text(size = 13, face = "bold"),
+        plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
         axis.text.x = element_text(face = "bold", vjust = 1),
         legend.position = "none")
   
 # Agregamos la interacción
 ggplotly(int_plot_port_SP_dif)
 ```
+
+Posterior a tener las variaciones diarias de cada serie, procedemos a generar los rendimientos promedios, desviación, varianza, covarianza y correlación de las series respectivamente
+
+```{r Operaciones_Portafolio}
+# Promedios Rendimientos
+promedio <- round(sapply(dif_log_portafolio,mean), digits = 6)
+
+# Varianza Rendimientos
+varianza <- round(sapply(dif_log_portafolio, var), digits = 6)
+
+# Desviación Rendimientos
+desviacion <- round(sapply(dif_log_portafolio, sd), digits = 6)
+
+# Matriz de Varianzas y Covarianzas
+covarianzas <- round(cov(dif_log_portafolio), digits = 6)
+
+# Matriz de Correlación
+correlacion <- round(cor(dif_log_portafolio) * 100, 2)
+
+# Imprimimos los resultados de Promedio, Varianza y Desviación
+recuadro <- rbind(promedio,varianza,desviacion)
+formattable(as_tibble(recuadro, rownames = NA))
+```
+
+
+
+```{r Mapa_Correlacion}
+generate_heat_map <- function(correlationMatrix, title)
+{
+  heatmap.2(
+    x = correlationMatrix,
+    cellnote = correlationMatrix,
+    main = title,
+    symm = TRUE,
+    dendrogram = "none",
+    Rowv = FALSE,
+    trace = "none",
+    density.info = "none",
+    notecol = "black",
+    key.title = "Nivel Correlación",
+    key.xlab = ""
+  )
+}
+
+generate_heat_map(correlacion, "Correlaciones Series")
+```
+
+
+
 

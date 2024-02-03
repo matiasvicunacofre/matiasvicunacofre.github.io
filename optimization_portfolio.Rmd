@@ -21,9 +21,9 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
   # Librerías
   {
     # Lista de paquetes que quieres verificar
-    paquetes <- c("tidyverse","readxl","janitor","skimr","scales","ggthemes",
+    paquetes <- c("tidyverse","janitor","skimr","scales","ggthemes",
                   "tseries","fPortfolio","knitr","kableExtra","gplots",
-                  "plotly", "lubridate","gplots","formattable")
+                  "plotly", "lubridate","gplots","formattable","qrmtools")
     
     # Verificar e instalar paquetes que no estén instalados
     for (paquete in paquetes) {
@@ -35,20 +35,20 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
     
     # Activacion Librerias
     suppressPackageStartupMessages({
-      library(tidyverse)
-      library(readxl)
-      library(janitor)
-      library(skimr)
-      library(scales)
-      library(ggthemes)
-      library(tseries)
-      library(fPortfolio)
-      library(knitr)
-      library(kableExtra)
-      library(plotly)
-      library(lubridate)
-      library(gplots)
-      library(formattable)
+      library(tidyverse) # Nucleo de trabajo
+      library(janitor) # Ajustes para data frames
+      library(skimr) # Estadísticas de datos detalladas
+      library(scales) # Ajuste de escalas (principalmente en ggplot2)
+      library(ggthemes) # Temas para ggplot2
+      library(tseries) # Transformación y uso de formato "ts", "zoo", etc
+      library(fPortfolio) # Optimización de Cartera
+      library(knitr) # Ajustes para tablas (junto con formattable)
+      library(kableExtra) # Complemento de knitr
+      library(plotly) # Gráficos Interactivos
+      library(lubridate) # Ajustes de Fechas
+      library(gplots) # Mapa de calor
+      library(formattable) # Tablas HTML
+      library(qrmtools) # Para calculos de rendimientos
     })
   }
   # Configuraciones Entorno de Trabajo
@@ -75,12 +75,17 @@ Luego de las configuraciones, generamos la primera muestra de datos a utilizar, 
 Junto con ello, usamos el paquete `skimr` para realizar un análisis estadístico básico de la serie con los precios históricos, teniendo su media, percentiles y demás detalles.
 
 ```{r SP_load}
+# Preambulo (Rango de fechas a considerar para medición)
+start_port <- as.Date("2000-01-01")
+end_port <- as.Date("2023-12-31")
+quote_port <- "AdjClose"
+
 # Carga serie S&P 500.
 SP500 <- get.hist.quote(
   instrument = "^GSPC",
-  start = as.Date("2000-01-01"),
-  end = as.Date("2023-12-31"),
-  quote = "AdjClose"
+  start = start_port,
+  end = end_port,
+  quote = quote_port
 )
 
 # Renombramos la base original
@@ -112,8 +117,7 @@ int_plot_SP500 <- SP_500 %>%
             color = "blue4") +
   labs(x = "Años",
        y = "Precio $USD",
-       title = "Precio Ajustado S&P 500",
-       subtitle = "En dólares") +
+       title = "Precio Ajustado S&P 500") +
   
   theme_minimal() +
   theme(axis.title.x = element_text(size = 12, 
@@ -122,20 +126,64 @@ int_plot_SP500 <- SP_500 %>%
                                     face = "bold"),
         plot.title = element_text(size = 20,
                                   face = "bold", 
-                                  hjust = 0.5),
-        plot.subtitle = element_text(size = 20,
-                                  face = "bold", 
                                   hjust = 0.5))
 
 # Generamos el gráfico de forma interactiva
 ggplotly(int_plot_SP500)
 ```
 
-Siguiendo con esta ídea, ahora generaremos una cartera, la cuál se compondrá de a lo menos 10 tipos de empresas, para este ejemplo, usaremos empresas que cotizan en la bolsa de Nueva York, especificamente serán las siguientes:
+Además de tener los datos de este índice de mercado norteamericano, necesitamos tener un instrumento que, siguiendo la teoría de Markowitz, sea el que simule nuestro rendimiento "libre de riesgo" (*risk free*), de este modo, y siguiendo la dinámica de este ejercicio, usaremos el *Treasury Yield 30 Years*, el cuál será nuesrtro indicador histórico que seguirá la idea de tasa "segura" de ganar. Este indicador, al igual que todos los demás, son recuperados directamente desde 
+
+```{r var_risk_free, message=FALSE,warning=FALSE}
+# Cargamos los datos desde Yahoo Finance
+riskfree <- get.hist.quote(instrument = "^TYX",
+                            start = start_port, 
+                            end = end_port,
+                            quote = quote_port
+                            )
+
+# Cambiamos el nombre de la columna
+colnames(riskfree) <- "RiskFree"
+
+# Ajustamos la muestra
+risk_free <- riskfree %>%
+  as_tibble() %>% 
+  mutate(Fecha = as_date(time(riskfree))) %>% 
+  rename(Tasa = RiskFree)
+
+# Estadística Descriptiva de los datos
+formattable(skim_without_charts(risk_free$Tasa))
+```
+
+```{r plot_risk_free, fig.height=5}
+# Generamos el gráfico
+int_plot_risk_free <- risk_free %>%
+  na.omit() %>% 
+  ggplot(mapping = aes(x = Fecha,
+                       y = Tasa)) +
+  geom_line(aes(y = Tasa),
+            color = "red4") +
+  labs(x = "Años",
+       y = "Tasa rendimiento",
+       title = "Bono del Tesoro de EE.UU. a 30 años") +
+  
+  theme_minimal() +
+  theme(axis.title.x = element_text(size = 12, 
+                                    face = "bold"),
+        axis.title.y = element_text(size = 12, 
+                                    face = "bold"),
+        plot.title = element_text(size = 18,
+                                  face = "bold", 
+                                  hjust = 0.5))
+
+# Generamos el gráfico de forma interactiva
+ggplotly(int_plot_risk_free)
+```
+
+Siguiendo con esta ídea, ahora generaremos una cartera, la cuál se compondrá de a lo menos 7 tipos de empresas, para este ejemplo, usaremos empresas que cotizan en la bolsa de Nueva York, especificamente serán las siguientes:
 
 - Coca Cola (KO)
 - Pepsi Cola (PEP)
-- Johnson and Johnson (JNJ)
 - Walmart (WMT)
 - Target (TGT)
 - Apple (AAPL)
@@ -146,12 +194,10 @@ Con este listado de empresas, ahora construiremos nuestra base.
 
 # **Consolidando la cartera**
 
-```{r Portafolio_Generacion}
+```{r Portafolio_Generacion, message=FALSE}
 # Datos Previos
-tickets <- c("KO", "PEP", "JNJ", "WMT", "TGT", "AAPL", "MSFT", "AMZN")
+tickets <- c("KO", "PEP", "WMT", "TGT", "AAPL", "MSFT", "AMZN")
 portafolio <- tibble()
-start_port <- as.Date("2000-01-01")
-end_port <- as.Date("2023-12-31")
 
 # Iteración de Recopilación de Series
 for (i in seq_along(tickets)) {
@@ -209,31 +255,42 @@ ggplotly(int_plot_portafolio)
 
 Posterior a esto, crearemos los beneficios de cada serie (incluida el S&P 500), añadiendo además una normalización logartímica para reescalar la muestra.
 
-```{r diff_port}
+```{r returns_port}
+# Calculamos los rendimientos de la cartera
+returns_portafolio <- round(returns(portafolio, method = "logarithmic"), digits = 4)
+head(returns_portafolio)
 
-# Diferenciamos la cartera
-dif_log_portafolio <- round(diff(log(portafolio)), digits = 6)
-head(dif_log_portafolio)
+# Calculamos los rendimientos del indice S&P 500
+aux_SP500 <- returns(SP500, method = "logarithmic")
+returns_SP500 <- aux_SP500 %>% 
+  as_tibble() %>% 
+  rename(SP500 = V1)
+returns_SP500 <- xts::reclass(returns_SP500,match.to = aux_SP500)
+head(returns_SP500)
 
-# Diferenciamos el indice S&P 500
-dif_log_SP500 <- round(diff(log(SP500)), digits = 6)
-head(dif_log_SP500)
+# Calculamos los rendimientos del Bono del Tesoro
+aux_riskfree <- returns(riskfree, method = "logarithmic")
+returns_riskfree <- aux_riskfree %>% 
+  as_tibble() %>% 
+  rename(riskfree = V1)
+returns_riskfree <- xts::reclass(returns_riskfree,match.to = aux_riskfree)
+head(returns_riskfree)
 ```
 
 Gráficamente esto se ve de la siguiente manera:
 
 ```{r Plot_rendimientos}
 # Ajustes a la muestra (formateo de zoo a tibble)
-port_SP_long <- merge(dif_log_portafolio,dif_log_SP500)
-Time_diff <- time(port_SP_long)
+data_long <- merge(returns_portafolio,returns_SP500,returns_riskfree)
+Time <- time(data_long)
 
 # Creamos un reshape "wide to long" para facilitar la graficación
-port_SP_long <- cbind(Time_diff,as_tibble(port_SP_long)) %>%
-  gather(key = "Serie", value = "Precio", -Time_diff)
+data_long <- cbind(Time,as_tibble(data_long)) %>%
+  gather(key = "Serie", value = "Precio", -Time)
 
 # Creamos el gráfico de series de tiempo
-int_plot_port_SP_dif <- ggplot(port_SP_long, 
-                              aes(x = Time_diff, 
+int_plot_data_long <- ggplot(data_long, 
+                              aes(x = Time, 
                                   y = Precio, 
                                   group = Serie, 
                                   color = Serie)) +
@@ -250,33 +307,35 @@ int_plot_port_SP_dif <- ggplot(port_SP_long,
         legend.position = "none")
   
 # Agregamos la interacción
-ggplotly(int_plot_port_SP_dif)
+ggplotly(int_plot_data_long)
 ```
+
+# **Análisis Estadístico Inicial**
 
 Posterior a tener las variaciones diarias de cada serie, procedemos a generar los rendimientos promedios, desviación, varianza, covarianza y correlación de las series respectivamente
 
 ```{r Operaciones_Portafolio}
 # Promedios Rendimientos
-promedio <- round(sapply(dif_log_portafolio,mean), digits = 6)
+promedio <- round(sapply(returns_portafolio,mean), digits = 6)
 
 # Varianza Rendimientos
-varianza <- round(sapply(dif_log_portafolio, var), digits = 6)
+varianza <- round(sapply(returns_portafolio, var), digits = 6)
 
 # Desviación Rendimientos
-desviacion <- round(sapply(dif_log_portafolio, sd), digits = 6)
+desviacion <- round(sapply(returns_portafolio, sd), digits = 6)
 
 # Matriz de Varianzas y Covarianzas
-covarianzas <- round(cov(dif_log_portafolio), digits = 6)
+covarianzas <- round(cov(returns_portafolio), digits = 6)
 
 # Matriz de Correlación
-correlacion <- round(cor(dif_log_portafolio) * 100, 2)
+correlacion <- round(cor(returns_portafolio) * 100, 2)
 
 # Imprimimos los resultados de Promedio, Varianza y Desviación
 recuadro <- rbind(promedio,varianza,desviacion)
 formattable(as_tibble(recuadro, rownames = NA))
 ```
 
-
+Teniendo la información estadística relevante, ahora finalizamos el análisis previo con un mapa de calor, el cuál visualiza la correlación que posee cada una de las series de nuestra muestra, siendo los sectores más rojizos aquellos que se alejan de la correlación positiva ($\rho<1$), mientras que las zonas más amarillas o anaranjadas corresponden a una correlación entre ellas mayor ($\rho\sim1$). Para una mayor comprensión y simplicidad del análisis, transformamos en la chunck anterior la correlación entre las series, siendo estas multiplicadas por 100, de este modo en el gráfico el valor que representa cada recuadro corresponde a su correlación porcentual.
 
 ```{r Mapa_Correlacion}
 generate_heat_map <- function(correlationMatrix, title)
@@ -296,9 +355,54 @@ generate_heat_map <- function(correlationMatrix, title)
   )
 }
 
-generate_heat_map(correlacion, "Correlaciones Series")
+generate_heat_map(correlacion, "Correlaciones Empresas")
 ```
 
+Con este análisis previo tenemos la siguiente información
 
+# **Creando el Modelo**
+
+```{r Modelo_MV, message=FALSE, warning=FALSE}
+# Especificaciones del Modelo
+markov <- portfolioSpec() # Generamos las especificaciones
+constraints <-  "Shorts"  # Determinamos la restricción a "venta corta"
+
+# Determinamos la tasa libre de riesgo del Modelo
+setRiskFreeRate(markov) <- as.numeric(mean(returns_riskfree, na.rm = TRUE))
+
+# Seteamos el número de portafolios a simular en la frontera eficiente
+setNFrontierPoints(markov) <- 50
+
+# Calculamos el Modelo de Markowitz de Mínima Varianza
+Frontera <-
+  portfolioFrontier(as.timeSeries(returns_portafolio), 
+                    spec = markov, 
+                    constraints)
+
+# Imprimimos los resultados
+print(Frontera)
+```
+
+```{r Grafico_Modelo_MV}
+# Generamos el Gráfico de nuestra simulación
+frontierPlot(Frontera)
+grid()
+tangencyPoints(Frontera,
+               pch = 19,
+               col = "red",
+               cex = 2)
+tangencyLines(Frontera,
+              col = "grey",
+              pch = 19,
+              cex = 2)
+minvariancePoints(Frontera,
+                  col = "blue",
+                  pch = 19,
+                  cex = 2)
+monteCarloPoints(Frontera,
+                 mCsteps = 10000,
+                 col = "#0098D5",
+                 cex = 0.001)
+```
 
 

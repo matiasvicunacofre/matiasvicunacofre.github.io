@@ -85,7 +85,8 @@ SP500 <- get.hist.quote(
   instrument = "^GSPC",
   start = start_port,
   end = end_port,
-  quote = quote_port
+  quote = quote_port,
+  quiet = TRUE
 )
 
 # Renombramos la base original
@@ -139,7 +140,8 @@ Además de tener los datos de este índice de mercado norteamericano, necesitamo
 riskfree <- get.hist.quote(instrument = "^TYX",
                             start = start_port, 
                             end = end_port,
-                            quote = quote_port
+                            quote = quote_port,
+                            quiet = TRUE
                             )
 
 # Cambiamos el nombre de la columna
@@ -205,7 +207,8 @@ for (i in seq_along(tickets)) {
     instrument = tickets[i],
     start = start_port,
     end = end_port,
-    quote = "Adjusted"
+    quote = "Adjusted",
+    quiet = TRUE
   )
 
   # Verifica si el objeto portafolio está vacío
@@ -258,7 +261,6 @@ Posterior a esto, crearemos los beneficios de cada serie (incluida el S&P 500), 
 ```{r returns_port}
 # Calculamos los rendimientos de la cartera
 returns_portafolio <- round(returns(portafolio, method = "logarithmic"), digits = 4)
-head(returns_portafolio)
 
 # Calculamos los rendimientos del indice S&P 500
 aux_SP500 <- returns(SP500, method = "logarithmic")
@@ -266,7 +268,6 @@ returns_SP500 <- aux_SP500 %>%
   as_tibble() %>% 
   rename(SP500 = V1)
 returns_SP500 <- xts::reclass(returns_SP500,match.to = aux_SP500)
-head(returns_SP500)
 
 # Calculamos los rendimientos del Bono del Tesoro
 aux_riskfree <- returns(riskfree, method = "logarithmic")
@@ -274,7 +275,12 @@ returns_riskfree <- aux_riskfree %>%
   as_tibble() %>% 
   rename(riskfree = V1)
 returns_riskfree <- xts::reclass(returns_riskfree,match.to = aux_riskfree)
-head(returns_riskfree)
+
+# Imprimimos los resultados 
+aux_data_printed <- merge(returns_portafolio,round(returns_riskfree,digits = 4),round(returns_SP500, digits = 4))
+Date <- time(aux_data_printed)
+Date <- format(Date, "%d-%m-%Y")
+formattable(head(cbind(Date,as_tibble(aux_data_printed))))
 ```
 
 Gráficamente esto se ve de la siguiente manera:

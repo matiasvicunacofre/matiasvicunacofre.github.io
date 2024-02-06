@@ -31,7 +31,7 @@ output:
 
 ---
 
-# **Configuraciones Iniciales para R**
+# **Configuraciones Iniciales**
 
 Antes de comenzar con nuestra optimización de cartera, utilizando la teoría del portafolio de Markowitz, designaremos las configuraciones iniciales para el trabajo, comenzando con la verificación, instalación y carga de los paquetes a utilizar para el caso, luego de ello, al mismo tiempo hacemos unas configuraciones aparte para el entorno de trabajo propiamente tal (no es necesario para el markdown, sin embargo, para aquellos que quieran replicar el modelo, les sea útil), con esto todo
 

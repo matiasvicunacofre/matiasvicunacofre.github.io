@@ -1,5 +1,5 @@
 ---
-title: "Página Principal"
+title: ""
 output:
   html_document:
     df_print: paged
@@ -8,9 +8,11 @@ output:
 \vspace{5mm}
 
 ![center](images/IMG_7249.jpg){width="25%"}
-\vspace{10mm}
+\vspace{20mm}
 
-**CV disponible [aquí](cv/CV_Matias_Vicuna_Cofre.pdf)**
+## **Curriculum Vitae**
+
+CV disponible [aquí](cv/CV_Matias_Vicuna_Cofre.pdf)
 
 ## **Economist & Junior Data Scientist**
 

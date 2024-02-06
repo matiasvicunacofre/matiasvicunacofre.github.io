@@ -224,7 +224,7 @@ colnames(portafolio) <- tickets
 Fecha <- time(portafolio)
 
 # Imprime el resultado
-head(portafolio)
+formattable(head((cbind(Fecha,as_tibble(portafolio)))))
 ```
 
 Teniendo ya conformada la cartera, visualizamos la evolución histórica de cada serie

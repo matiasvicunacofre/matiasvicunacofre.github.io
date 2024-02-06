@@ -1,5 +1,24 @@
 ---
 title: "Portfolio"
+
+navbar:
+  title: "Matías Vicuña Cofré"
+  left:
+    - text: "Inicio"
+      icon: fa-home
+      href: index.html
+    - text: "Portafolio"
+      icon: fa-briefcase
+      href: portfolio.html
+      
+  right: 
+    - icon: fa-github
+      text: "Github"
+      href: https://github.com/matiasvicunacofre
+    - icon: fa-envelope
+      text: "Mail"
+      href: mailto:matiasvicunacofre@gmail.com
+
 ---
 
 \vspace{20mm}

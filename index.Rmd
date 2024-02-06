@@ -10,6 +10,8 @@ output:
 ![center](images/IMG_7249.jpg){width="25%"}
 \vspace{10mm}
 
+**CV disponible [aquí](cv/CV_Matias_Vicuna_Cofre.pdf)**
+
 ## **Economist & Junior Data Scientist**
 
 **(EN)**

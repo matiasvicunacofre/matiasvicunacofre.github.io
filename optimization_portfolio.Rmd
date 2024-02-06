@@ -2,7 +2,14 @@
 title: "Optimización de Cartera"
 author: "Matías Vicuña Cofré"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  html_document:
+    df_ paged: TRUE
+    toc: TRUE
+    toc_float:
+      collapse: true
+      smooth_scroll: true
+
 ---
 
 # **Configuraciones Iniciales para R**
@@ -10,7 +17,7 @@ output: html_document
 Antes de comenzar con nuestra optimización de cartera, utilizando la teoría del portafolio de Markowitz, designaremos las configuraciones iniciales para el trabajo, comenzando con la verificación, instalación y carga de los paquetes a utilizar para el caso, luego de ello, al mismo tiempo hacemos unas configuraciones aparte para el entorno de trabajo propiamente tal (no es necesario para el markdown, sin embargo, para aquellos que quieran replicar el modelo, les sea útil), con esto todo
 
 ```{r setup, include=TRUE, message=FALSE,warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.width = 10, fig.height = 8, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.width = 8.5, fig.height = 9, message = FALSE, warning = FALSE)
 #############################################################################
 # Portfolio Opimization
 # Author: Matías Vicuña Cofré
@@ -227,7 +234,7 @@ colnames(portafolio) <- tickets
 Fecha <- time(portafolio)
 
 # Imprime el resultado
-formattable(head((cbind(Fecha,as_tibble(portafolio)))))
+rmarkdown::paged_table((cbind(format(Fecha, "%d-%m-%Y"),as_tibble(portafolio))))
 ```
 
 Teniendo ya conformada la cartera, visualizamos la evolución histórica de cada serie
@@ -280,7 +287,7 @@ returns_riskfree <- xts::reclass(returns_riskfree,match.to = aux_riskfree)
 aux_data_printed <- merge(returns_portafolio,round(returns_riskfree,digits = 4),round(returns_SP500, digits = 4))
 Date <- time(aux_data_printed)
 Date <- format(Date, "%d-%m-%Y")
-formattable(head(cbind(Date,as_tibble(aux_data_printed))))
+rmarkdown::paged_table(cbind(Date,as_tibble(aux_data_printed)))
 ```
 
 Gráficamente esto se ve de la siguiente manera:

@@ -14,11 +14,11 @@ navbar:
           menu:
           - text: "Saber más"
             href: portfolio.html
-          - text: "Macroeconometrics"
+          - text: "1- Macroeconometrics"
             href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics
-          - text: "Linear Regression"
+          - text: "2- Linear Regression"
             href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate
-          - text: "Portfolio Optimization"
+          - text: "3- Portfolio Optimization"
             href: optimization_portfolio.html
         - text: "LABFENUAH (Pendiente)"
           href: https://www.labfenuah.cl/
@@ -37,7 +37,7 @@ navbar:
 
 
 
-## **Macroeconometrics**
+### **Macroeconometrics**
 
 (EN)
 In this section I develop some codes on macroeconomics, specifically time series, AR, VAR, MA and other models.
@@ -47,7 +47,7 @@ En este apartado desarrollo algunos códigos sobre macroeconomía, especificamen
 
 [Página/Page](https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics)
 
-## Linear Regression
+### **Linear Regression**
 
 (EN)
 Development of Multiple Regression Models, using R for analysis and interpretation.
@@ -57,7 +57,7 @@ Desarrollo de Modelos de Regresión Múltiple, utilizando R para el análisis e 
 
 [Página/Page](https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate)
 
-## Portfolio Optimization
+### **Portfolio Optimization**
 
 (EN)
 Development of Multiple Regression Models, using R for analysis and interpretation.

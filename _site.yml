@@ -13,11 +13,11 @@ navbar:
           menu:
           - text: "Saber más"
             href: portfolio.html
-          - text: "Macroeconometrics"
+          - text: "1- Macroeconometrics"
             href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics
-          - text: "Linear Regression"
+          - text: "2- Linear Regression"
             href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate
-          - text: "Portfolio Optimization"
+          - text: "3- Portfolio Optimization"
             href: optimization_portfolio.html
         - text: "LABFENUAH (Pendiente)"
           href: https://www.labfenuah.cl/

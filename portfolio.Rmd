@@ -15,7 +15,7 @@ navbar:
           - text: "Saber más"
             href: portfolio.html
           - text: "1- Series de Tiempo"
-            href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics
+            href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Time_Series
           - text: "2- Regresión Linear"
             href: linear_regression.html
           - text: "3- Optimización de Cartera"
@@ -49,7 +49,7 @@ In this section I develop some codes on macroeconomics, specifically time series
 (ES)
 En este apartado desarrollo algunos códigos sobre macroeconomía, especificamente series de tiempo, modelos AR, VAR, MA y demás.
 
-Código disponible en [Github](https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics)
+Código disponible en [Github](https://github.com/matiasvicunacofre/Portfolio/tree/main/Time_Series)
 
 \vspace{5mm}
 

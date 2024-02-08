@@ -1,5 +1,35 @@
 ---
 title: ""
+
+navbar:
+  title: "Matías Vicuña Cofré"
+  left:
+    - text: "Inicio"
+      icon: fa-home
+      href: index.html
+    - text: "Portafolio"
+      icon: fa-briefcase
+      menu:
+        - text: "Trabajos Independientes"
+          menu:
+          - text: "Saber más"
+            href: portfolio.html
+          - text: "Macroeconometrics"
+            href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics
+          - text: "Linear Regression"
+            href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate
+          - text: "Portfolio Optimization"
+            href: optimization_portfolio.html
+        - text: "LABFENUAH (Pendiente)"
+          href: https://www.labfenuah.cl/
+  right: 
+    - icon: fa-github
+      text: "Github"
+      href: https://github.com/matiasvicunacofre
+    - icon: fa-envelope
+      text: "Mail"
+      href: mailto:matiasvicunacofre@gmail.com
+
 output:
   html_document:
     df_print: paged

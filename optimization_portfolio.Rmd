@@ -11,8 +11,19 @@ navbar:
       href: index.html
     - text: "Portafolio"
       icon: fa-briefcase
-      href: portfolio.html
-      
+      menu:
+        - text: "Trabajos Independientes"
+          menu:
+          - text: "Saber más"
+            href: portfolio.html
+          - text: "Macroeconometrics"
+            href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics
+          - text: "Linear Regression"
+            href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate
+          - text: "Portfolio Optimization"
+            href: optimization_portfolio.html
+        - text: "LABFENUAH (Pendiente)"
+          href: https://www.labfenuah.cl/
   right: 
     - icon: fa-github
       text: "Github"

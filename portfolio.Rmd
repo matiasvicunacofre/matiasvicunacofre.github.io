@@ -33,7 +33,7 @@ En este apartado desarrollo algunos códigos sobre macroeconomía, especificamen
 
 [Página/Page](https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics)
 
-## Modeling Multivariate
+## Linear Regression
 
 (EN)
 Development of Multiple Regression Models, using R for analysis and interpretation.

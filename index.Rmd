@@ -14,11 +14,11 @@ navbar:
           menu:
           - text: "Saber más"
             href: portfolio.html
-          - text: "1- Macroeconometrics"
+          - text: "1- Series de Tiempo"
             href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics
-          - text: "2- Linear Regression"
-            href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate
-          - text: "3- Portfolio Optimization"
+          - text: "2- Regresión Linear"
+            href: linear_regression.html
+          - text: "3- Optimización de Cartera"
             href: optimization_portfolio.html
         - text: "LABFENUAH (Pendiente)"
           href: https://www.labfenuah.cl/
@@ -43,101 +43,6 @@ output:
 ## **Curriculum Vitae**
 
 CV disponible [aquí](cv/CV_Matias_Vicuna_Cofre.pdf)
-
-## **Economist & Junior Data Scientist**
-
-**(EN)**
-
-¡Hi! 👋 Welcome to my web page. I'm Matías Vicuña Cofré, an chilean economist with a passion for macroeconomics and finance. I specialize in data analysis and the development of bespoke models tailored to the intricacies of each economic domain.
-
-\vspace{5mm}
-
-### 🌐 **About Me**
-
-I hold a degree in Economics and have a keen interest in exploring the complex interplay between economic variables. My expertise lies not only in traditional economic theories but also in leveraging the power of data and cutting-edge modeling techniques to gain deeper insights into economic phenomena.
-
-\vspace{5mm}
-
-### 💼 **Professional Experience**
-
-- **Laboratory Assistant - Alberto Hurtado University (July 2022 - January 2024)**:
-  Financial accounts data collection from Economatica for research and teaching. Project directed by Ph.D Tiago Alves Ferreira, application of R, STATA and Excel.
-
-- **Research Assistant - Alberto Hurtado University (July 2022 - January 2024)**: 
-  Worked with Ph.D Tiago Alves Ferreira from UAH and Ph.D(c) Leonardo Brioschi from FUCAPE Business School. Compilation and management of financial databases from Economatica, using STATA, R and Excel.
-
-- **Research Assistant - Alberto Hurtado University (January 2020 - March 2022)**: 
-  Worked with Ph.D Fernando Lopez. Compilation and statistical formulation of financial survey responses to workers, application of STATA and Excel.
-
-- **Intern - Economic Analysis Management, Central Bank of Chile (February 2023 - April 2023)**:
-  Project for the economic and price analysis department to monitor "news" of economic, financial and survey variables for GDP, Consumption and Investment forecasting. Dynamics Factors Model estimation for Nowcasting with macroeconomic context. Project with focus on strategic decision support. Skills: English - Problem solving - Organizational skills - Economics - R - MATLAB - Nowcasting - Dynamics Factors Model - Macroeconometrics - Economic research - Data analysis - Econometrics.
-
-\vspace{5mm}
-
-### 📰 **Publications**
-
-- [Navegando por un mar de incertidumbre: ¿Quién guía el timón frente a las olas?](https://fen.uahurtado.cl/2023/articulos/navegando-por-un-mar-de-incertidumbre-quien-guia-el-timon-frente-a-las-olas/)
-  Abstract: In recent periods Chile has experienced a historical maximum in its economic policy uncertainty index, EPU. Undoubtedly this increase is also due to the increase of this uncertainty at the global level, which is natural in a post-pandemic recovery stage with rising inflation and interest rates worldwide, expansion of public expenditures in many countries and the war in Ukraine.
-
-### 🏫 **Academic Experiences**.
-
-- **Instructor of Programming in R - Universidad Alberto Hurtado**
-
-- **Assistant Professor Courses (2020-2023)**:
-  • Corporate Finance
-  • Finance
-  • Multiple Regression Model in R
-  • Project Evaluation
-  • Introduction to Macroeconomics
-  • Economic and Business History
-  • Microeconomics
-
-\vspace{5mm}
-
-### 📊 **Data Analysis**
-
-My proficiency in data analysis extends to a variety of tools and languages, including but not limited to:
-
-- R: dplyr, ggplot2, tidyverse.
-- Excel: Advanced data manipulation and visualization
-
-I enjoy transforming raw data into meaningful narratives and visualizations that tell compelling stories about economic trends.
-
-\vspace{5mm}
-
-### 📈 **Projects**
-
-- **Data Science Laboratory LABFENUAH (2022-Present)**:
-  The Data Science Laboratory of the Faculty of Economics and Business of the Alberto Hurtado University (LABFENUAH) aims to bring the university, academic and research community closer to the use of free, fast and secure access data. My position in this project was as a lab assistant, in charge of collecting, cleaning and consolidating open access financial data from the Financial Market Commission (CMF) from its portal, concretizing hundreds of thousands of financial data from the main companies in the country (Chile) in a large consolidated base. For this task, I have used the R programming language, with which I have been able to perform the corresponding collection, filtering and adaptation of the data, so that they are understandable to anyone who wants to access them.
-
-  In addition to this, I have created a basic Shiny application, with which you can access the data already consolidated and reviewed previously, with which with a few simple clicks, you can access the databases with filters or queries you need,
-
-  To access the Shiny database application, **[click here](https://labfenuah.shinyapps.io/index/)**.
-
-  To view our LABFENUAH website, **[click here](https://www.labfenuah.cl/)**.
-
-  **Note: This project is in development phase, so possible errors in the base and application are to be reviewed, any questions and / or suggestions let me know by email.**
-
-\vspace{5mm}
-
-### 📚 **Education**
-
-- Degree in Economics, Universidad Alberto Hurtado, 2022.
-- Business Administration mention in Economics, Universidad Alberto Hurtado, 2023.
-- Master Degree in Economics (c), Universidad Alberto Hurtado, present.
-
-\vspace{5mm}
-
-### 📫 **Let's Connect**
-
-I'm always open to collaboration and discussions within the economic and data science community. Feel free to reach out to me via:
-
-- [LinkedIn](https://www.linkedin.com/in/matiasvicuna/)
-- Mail (matiasvicunacofre@gmail.com)
-
-Thank you for visiting my web page! 🚀
-
----
 
 ## **Economista y Científico de Datos Junior**
 
@@ -234,3 +139,102 @@ Siempre estoy abierto/a a colaboraciones y discusiones dentro de la comunidad ec
 - Correo (matiasvicunacofre@gmail.com)
 
 ¡Gracias por visitar mi Página!
+
+---
+
+## **Economist & Junior Data Scientist**
+
+**(EN)**
+
+¡Hi! 👋 Welcome to my web page. I'm Matías Vicuña Cofré, an chilean economist with a passion for macroeconomics and finance. I specialize in data analysis and the development of bespoke models tailored to the intricacies of each economic domain.
+
+\vspace{5mm}
+
+### 🌐 **About Me**
+
+I hold a degree in Economics and have a keen interest in exploring the complex interplay between economic variables. My expertise lies not only in traditional economic theories but also in leveraging the power of data and cutting-edge modeling techniques to gain deeper insights into economic phenomena.
+
+\vspace{5mm}
+
+### 💼 **Professional Experience**
+
+- **Laboratory Assistant - Alberto Hurtado University (July 2022 - January 2024)**:
+  Financial accounts data collection from Economatica for research and teaching. Project directed by Ph.D Tiago Alves Ferreira, application of R, STATA and Excel.
+
+- **Research Assistant - Alberto Hurtado University (July 2022 - January 2024)**: 
+  Worked with Ph.D Tiago Alves Ferreira from UAH and Ph.D(c) Leonardo Brioschi from FUCAPE Business School. Compilation and management of financial databases from Economatica, using STATA, R and Excel.
+
+- **Research Assistant - Alberto Hurtado University (January 2020 - March 2022)**: 
+  Worked with Ph.D Fernando Lopez. Compilation and statistical formulation of financial survey responses to workers, application of STATA and Excel.
+
+- **Intern - Economic Analysis Management, Central Bank of Chile (February 2023 - April 2023)**:
+  Project for the economic and price analysis department to monitor "news" of economic, financial and survey variables for GDP, Consumption and Investment forecasting. Dynamics Factors Model estimation for Nowcasting with macroeconomic context. Project with focus on strategic decision support. Skills: English - Problem solving - Organizational skills - Economics - R - MATLAB - Nowcasting - Dynamics Factors Model - Macroeconometrics - Economic research - Data analysis - Econometrics.
+
+\vspace{5mm}
+
+### 📰 **Publications**
+
+- [Navegando por un mar de incertidumbre: ¿Quién guía el timón frente a las olas?](https://fen.uahurtado.cl/2023/articulos/navegando-por-un-mar-de-incertidumbre-quien-guia-el-timon-frente-a-las-olas/)
+  Abstract: In recent periods Chile has experienced a historical maximum in its economic policy uncertainty index, EPU. Undoubtedly this increase is also due to the increase of this uncertainty at the global level, which is natural in a post-pandemic recovery stage with rising inflation and interest rates worldwide, expansion of public expenditures in many countries and the war in Ukraine.
+
+### 🏫 **Academic Experiences**.
+
+- **Instructor of Programming in R - Universidad Alberto Hurtado**
+
+- **Assistant Professor Courses (2020-2023)**:
+  • Corporate Finance
+  • Finance
+  • Multiple Regression Model in R
+  • Project Evaluation
+  • Introduction to Macroeconomics
+  • Economic and Business History
+  • Microeconomics
+
+\vspace{5mm}
+
+### 📊 **Data Analysis**
+
+My proficiency in data analysis extends to a variety of tools and languages, including but not limited to:
+
+- R: dplyr, ggplot2, tidyverse.
+- Excel: Advanced data manipulation and visualization
+
+I enjoy transforming raw data into meaningful narratives and visualizations that tell compelling stories about economic trends.
+
+\vspace{5mm}
+
+### 📈 **Projects**
+
+- **Data Science Laboratory LABFENUAH (2022-Present)**:
+  The Data Science Laboratory of the Faculty of Economics and Business of the Alberto Hurtado University (LABFENUAH) aims to bring the university, academic and research community closer to the use of free, fast and secure access data. My position in this project was as a lab assistant, in charge of collecting, cleaning and consolidating open access financial data from the Financial Market Commission (CMF) from its portal, concretizing hundreds of thousands of financial data from the main companies in the country (Chile) in a large consolidated base. For this task, I have used the R programming language, with which I have been able to perform the corresponding collection, filtering and adaptation of the data, so that they are understandable to anyone who wants to access them.
+
+  In addition to this, I have created a basic Shiny application, with which you can access the data already consolidated and reviewed previously, with which with a few simple clicks, you can access the databases with filters or queries you need,
+
+  To access the Shiny database application, **[click here](https://labfenuah.shinyapps.io/index/)**.
+
+  To view our LABFENUAH website, **[click here](https://www.labfenuah.cl/)**.
+
+  **Note: This project is in development phase, so possible errors in the base and application are to be reviewed, any questions and / or suggestions let me know by email.**
+
+\vspace{5mm}
+
+### 📚 **Education**
+
+- Degree in Economics, Universidad Alberto Hurtado, 2022.
+- Business Administration mention in Economics, Universidad Alberto Hurtado, 2023.
+- Master Degree in Economics (c), Universidad Alberto Hurtado, present.
+
+\vspace{5mm}
+
+### 📫 **Let's Connect**
+
+I'm always open to collaboration and discussions within the economic and data science community. Feel free to reach out to me via:
+
+- [LinkedIn](https://www.linkedin.com/in/matiasvicuna/)
+- Mail (matiasvicunacofre@gmail.com)
+
+Thank you for visiting my web page! 🚀
+
+---
+
+

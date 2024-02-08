@@ -1,0 +1,108 @@
+---
+title: "**Linear Regression**"
+author: "Matías Vicuña Cofré"
+date: "última actualización: `r Sys.Date()`"
+
+navbar:
+  title: "Matías Vicuña Cofré"
+  left:
+    - text: "Inicio"
+      icon: fa-home
+      href: index.html
+    - text: "Portafolio"
+      icon: fa-briefcase
+      menu:
+        - text: "Trabajos Independientes"
+          menu:
+          - text: "Saber más"
+            href: portfolio.html
+          - text: "1- Series de Tiempo"
+            href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics
+          - text: "2- Regresión Linear"
+            href: linear_regression.html
+          - text: "3- Optimización de Cartera"
+            href: optimization_portfolio.html
+        - text: "LABFENUAH (Pendiente)"
+          href: https://www.labfenuah.cl/
+  right: 
+    - icon: fa-github
+      text: "Github"
+      href: https://github.com/matiasvicunacofre
+    - icon: fa-envelope
+      text: "Mail"
+      href: mailto:matiasvicunacofre@gmail.com
+
+output: 
+  html_document:
+    df_ paged: TRUE
+    toc: TRUE
+    toc_float:
+      collapse: true
+      smooth_scroll: true
+---
+
+# **Configuraciones Iniciales**
+
+```{r setup, include=TRUE, message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.width = 8.5, fig.height = 9, message = FALSE, warning = FALSE)
+#############################################################################
+# Portfolio Opimization
+# Author: Matías Vicuña Cofré
+#############################################################################
+#******************** Configuraciones e Inicializacion *********************#
+#############################################################################
+{
+  # Librerías
+  {
+    # Lista de paquetes que quieres verificar
+    paquetes <- c("tidyverse","skimr","stargazer","wooldridge",
+                  "lmtest","car","formattable")
+    
+    # Verificar e instalar paquetes que no estén instalados
+    for (paquete in paquetes) {
+      if (!require(paquete, character.only = TRUE)) {
+        install.packages(paquete)
+      }
+    }
+    remove(paquetes)
+    
+    # Activacion Librerias
+    suppressPackageStartupMessages({
+      library(tidyverse) # Nucleo de trabajo
+      library(skimr) # Estadísticas detalladas 
+      library(stargazer) # Visualización resultados Regresión
+      library(wooldridge) # Datos libro econometría Wooldridge
+      library(lmtest) # Test de modelos de regresión linear
+      library(car) # Paquete para regresión linear
+      library(formattable) # Darle formato HTML a las tablas
+    })
+  }
+  # Configuraciones Entorno de Trabajo
+  {
+    # Limpiamos el entorno de trabajo
+    rm(list = ls())
+    
+    # Limpiamos la Memoria (RAM)
+    gc(reset = TRUE)
+    
+    # Limpiamos la consola
+    cat("\014")
+    
+    # De número científico a natural
+    options(scipen = 999)
+  }
+}
+```
+
+# **Regresión Lineal**
+
+Para comenzar con el modelo de regresión, usaremos la base de datos *wage1*, el cual se encuentra en el paquete `wooldridge` (para mas detalle del paquete, sus bases y descripciones, haz clic [aquí](https://cran.r-project.org/web/packages/wooldridge/wooldridge.pdf)), con ello ya expuesto, procedemos con la carga de la base y su primera visualización estadística de la misma.
+
+```{r data_1}
+# Cargamos la data desde el paquete Wooldrige
+data_1 <- wooldridge::wage1
+
+# Realizamos la primera visualización de los datos
+formattable(skim_without_charts(data_1))
+```
+

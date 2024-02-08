@@ -1,7 +1,7 @@
 ---
-title: "Optimización de Cartera"
+title: "**Optimización de Cartera**"
 author: "Matías Vicuña Cofré"
-date: "`r Sys.Date()`"
+date: "última actualización: `r Sys.Date()`"
 
 navbar:
   title: "Matías Vicuña Cofré"
@@ -16,11 +16,11 @@ navbar:
           menu:
           - text: "Saber más"
             href: portfolio.html
-          - text: "1- Macroeconometrics"
+          - text: "1- Series de Tiempo"
             href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics
-          - text: "2- Linear Regression"
-            href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate
-          - text: "3- Portfolio Optimization"
+          - text: "2- Regresión Linear"
+            href: linear_regression.html
+          - text: "3- Optimización de Cartera"
             href: optimization_portfolio.html
         - text: "LABFENUAH (Pendiente)"
           href: https://www.labfenuah.cl/
@@ -39,7 +39,6 @@ output:
     toc_float:
       collapse: true
       smooth_scroll: true
-
 ---
 
 # **Configuraciones Iniciales**
@@ -104,6 +103,8 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
   }
 }
 ```
+
+---
 
 # **Comenzando el Modelo**
 
@@ -353,6 +354,8 @@ int_plot_data_long <- ggplot(data_long,
 ggplotly(int_plot_data_long)
 ```
 
+---
+
 # **Análisis Estadístico Inicial**
 
 Posterior a tener las variaciones diarias de cada serie, procedemos a generar los rendimientos promedios, desviación, varianza, covarianza y correlación de las series respectivamente
@@ -403,6 +406,8 @@ generate_heat_map(correlacion, "Correlaciones Empresas")
 
 Con este análisis previo tenemos la siguiente información
 
+---
+
 # **Creando el Modelo**
 
 ```{r Modelo_MV, message=FALSE, warning=FALSE}
@@ -448,4 +453,4 @@ monteCarloPoints(Frontera,
                  cex = 0.001)
 ```
 
-
+---

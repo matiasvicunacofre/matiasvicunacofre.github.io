@@ -1,5 +1,5 @@
 ---
-title: "**Portfolio**"
+title: "**Trabajos Independientes**"
 
 navbar:
   title: "Matías Vicuña Cofré"
@@ -14,11 +14,11 @@ navbar:
           menu:
           - text: "Saber más"
             href: portfolio.html
-          - text: "1- Macroeconometrics"
+          - text: "1- Series de Tiempo"
             href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics
-          - text: "2- Linear Regression"
-            href: https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate
-          - text: "3- Portfolio Optimization"
+          - text: "2- Regresión Linear"
+            href: linear_regression.html
+          - text: "3- Optimización de Cartera"
             href: optimization_portfolio.html
         - text: "LABFENUAH (Pendiente)"
           href: https://www.labfenuah.cl/
@@ -30,14 +30,18 @@ navbar:
       text: "Mail"
       href: mailto:matiasvicunacofre@gmail.com
 
+
 ---
 \linebreak
 \vspace{20mm}
 
+En esta sección se encuentran algunos de los ejemplos y resoluciones aplicadas en R e diversos tópicos, tales como es econometría, series de tiempo y finanzas.
 
+*Nota: el símbolo (p) significa que la sección sigue estando en fase inicial, nada de lo expuesto aún es el final de cada sección pertinentemente. MVC*
 
+---
 
-### **Macroeconometrics**
+### **Series de Tiempo (p)**
 
 (EN)
 In this section I develop some codes on macroeconomics, specifically time series, AR, VAR, MA and other models.
@@ -45,19 +49,13 @@ In this section I develop some codes on macroeconomics, specifically time series
 (ES)
 En este apartado desarrollo algunos códigos sobre macroeconomía, especificamente series de tiempo, modelos AR, VAR, MA y demás.
 
-[Página/Page](https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics)
+Código disponible en [Github](https://github.com/matiasvicunacofre/Portfolio/tree/main/Macroeconometrics)
 
-### **Linear Regression**
+\vspace{5mm}
 
-(EN)
-Development of Multiple Regression Models, using R for analysis and interpretation.
+---
 
-(ES)
-Desarrollo de Modelos de Regresión Múltiple, utilizando R para el análisis e interpretación.
-
-[Página/Page](https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate)
-
-### **Portfolio Optimization**
+### [**Regresión Linear (p)**](linear_regression.html)
 
 (EN)
 Development of Multiple Regression Models, using R for analysis and interpretation.
@@ -65,4 +63,20 @@ Development of Multiple Regression Models, using R for analysis and interpretati
 (ES)
 Desarrollo de Modelos de Regresión Múltiple, utilizando R para el análisis e interpretación.
 
-[Página/Page](optimization_portfolio.html)
+Código disponible en [Github](https://github.com/matiasvicunacofre/Portfolio/tree/main/Modeling%20Multivariate)
+
+\vspace{5mm}
+
+---
+
+### [**Optimización de Cartera (p) **](optimization_portfolio.html)
+
+(EN)
+Development of Multiple Regression Models, using R for analysis and interpretation.
+
+(ES)
+Desarrollo de Modelos de Regresión Múltiple, utilizando R para el análisis e interpretación.
+
+Código disponible en [Github]()
+
+---

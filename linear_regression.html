@@ -12,7 +12,7 @@
 <meta name="author" content="Matías Vicuña Cofré" />
 
 
-<title>Linear Regression</title>
+<title>Regresión Lineal e Interpretaciones</title>
 
 <script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -36,6 +36,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 <link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
@@ -385,16 +387,21 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore"><strong>Linear Regression</strong></h1>
+<h1 class="title toc-ignore"><strong>Regresión Lineal e
+Interpretaciones</strong></h1>
 <h4 class="author">Matías Vicuña Cofré</h4>
-<h4 class="date">última actualización: 2024-02-08</h4>
+<h4 class="date">última actualización: 2024-02-09</h4>
 
 </div>
 
 
+<div style="text-align: justify">
+
 <div id="configuraciones-iniciales" class="section level1">
 <h1><strong>Configuraciones Iniciales</strong></h1>
-<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = &quot;center&quot;,fig.width = 8.5, fig.height = 9, message = FALSE, warning = FALSE)
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = &quot;center&quot;,
+                      fig.width = 8.5, fig.height = 9, message = FALSE, 
+                      warning = FALSE, results = &quot;asis&quot;)
 #############################################################################
 # Portfolio Opimization
 # Author: Matías Vicuña Cofré
@@ -406,7 +413,7 @@ div.tocify {
   {
     # Lista de paquetes que quieres verificar
     paquetes &lt;- c(&quot;tidyverse&quot;,&quot;skimr&quot;,&quot;stargazer&quot;,&quot;wooldridge&quot;,
-                  &quot;lmtest&quot;,&quot;car&quot;,&quot;formattable&quot;)
+                  &quot;lmtest&quot;,&quot;car&quot;,&quot;formattable&quot;,&quot;rmarkdown&quot;)
     
     # Verificar e instalar paquetes que no estén instalados
     for (paquete in paquetes) {
@@ -425,6 +432,7 @@ div.tocify {
       library(lmtest) # Test de modelos de regresión linear
       library(car) # Paquete para regresión linear
       library(formattable) # Darle formato HTML a las tablas
+      library(rmarkdown) # Formato rmarkdown
     })
   }
   # Configuraciones Entorno de Trabajo
@@ -443,9 +451,13 @@ div.tocify {
   }
 }</code></pre>
 <div style="page-break-after: always;"></div>
+<hr />
 </div>
 <div id="regresión-lineal" class="section level1">
 <h1><strong>Regresión Lineal</strong></h1>
+<p><br></p>
+<div id="cargando-la-muestra" class="section level3">
+<h3><strong>Cargando la muestra</strong></h3>
 <p>Para comenzar con el modelo de regresión, usaremos la base de datos
 <em>wage1</em>, el cual se encuentra en el paquete
 <code>wooldridge</code> (para mas detalle del paquete, sus bases y
@@ -456,889 +468,194 @@ visualización estadística de la misma.</p>
 <pre class="r"><code># Cargamos la data desde el paquete Wooldrige
 data_1 &lt;- wooldridge::wage1
 
-# Realizamos la primera visualización de los datos
-formattable(skim_without_charts(data_1))</code></pre>
+# Visualizamos la dimensión de la muestra
+dim_d1 &lt;- t(as_tibble(dim(data_1)))
+dim_d1 &lt;- as_tibble(dim_d1,rownames = NULL)
+colnames(dim_d1) &lt;- c(&quot;Filas&quot;,&quot;Columnas&quot;)
+formattable(dim_d1)</code></pre>
 <table class="table table-condensed">
 <thead>
 <tr>
 <th style="text-align:right;">
-skim_type
+Filas
 </th>
 <th style="text-align:right;">
-skim_variable
-</th>
-<th style="text-align:right;">
-n_missing
-</th>
-<th style="text-align:right;">
-complete_rate
-</th>
-<th style="text-align:right;">
-numeric.mean
-</th>
-<th style="text-align:right;">
-numeric.sd
-</th>
-<th style="text-align:right;">
-numeric.p0
-</th>
-<th style="text-align:right;">
-numeric.p25
-</th>
-<th style="text-align:right;">
-numeric.p50
-</th>
-<th style="text-align:right;">
-numeric.p75
-</th>
-<th style="text-align:right;">
-numeric.p100
+Columnas
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:right;">
-numeric
+526
 </td>
 <td style="text-align:right;">
-wage
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-5.89610267
-</td>
-<td style="text-align:right;">
-3.6930860
-</td>
-<td style="text-align:right;">
-0.5300000
-</td>
-<td style="text-align:right;">
-3.330000
-</td>
-<td style="text-align:right;">
-4.650000
-</td>
-<td style="text-align:right;">
-6.880000
-</td>
-<td style="text-align:right;">
-24.980000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-educ
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-12.56273764
-</td>
-<td style="text-align:right;">
-2.7690224
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-12.000000
-</td>
-<td style="text-align:right;">
-12.000000
-</td>
-<td style="text-align:right;">
-14.000000
-</td>
-<td style="text-align:right;">
-18.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-exper
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-17.01711027
-</td>
-<td style="text-align:right;">
-13.5721596
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-5.000000
-</td>
-<td style="text-align:right;">
-13.500000
-</td>
-<td style="text-align:right;">
-26.000000
-</td>
-<td style="text-align:right;">
-51.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-tenure
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-5.10456274
-</td>
-<td style="text-align:right;">
-7.2244623
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-2.000000
-</td>
-<td style="text-align:right;">
-7.000000
-</td>
-<td style="text-align:right;">
-44.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-nonwhite
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.10266160
-</td>
-<td style="text-align:right;">
-0.3038053
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-female
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.47908745
-</td>
-<td style="text-align:right;">
-0.5000380
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-married
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.60836502
-</td>
-<td style="text-align:right;">
-0.4885804
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-numdep
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1.04372624
-</td>
-<td style="text-align:right;">
-1.2618915
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-<td style="text-align:right;">
-2.000000
-</td>
-<td style="text-align:right;">
-6.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-smsa
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.72243346
-</td>
-<td style="text-align:right;">
-0.4482246
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-northcen
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.25095057
-</td>
-<td style="text-align:right;">
-0.4339728
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.750000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-south
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.35551331
-</td>
-<td style="text-align:right;">
-0.4791242
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-west
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.16920152
-</td>
-<td style="text-align:right;">
-0.3752867
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-construc
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.04562738
-</td>
-<td style="text-align:right;">
-0.2088743
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-ndurman
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.11406844
-</td>
-<td style="text-align:right;">
-0.3181970
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-trcommpu
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.04372624
-</td>
-<td style="text-align:right;">
-0.2046800
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-trade
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.28707224
-</td>
-<td style="text-align:right;">
-0.4528262
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-services
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.10076046
-</td>
-<td style="text-align:right;">
-0.3012978
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-profserv
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.25855513
-</td>
-<td style="text-align:right;">
-0.4382574
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-profocc
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.36692015
-</td>
-<td style="text-align:right;">
-0.4824233
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-clerocc
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.16730038
-</td>
-<td style="text-align:right;">
-0.3735991
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-servocc
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.14068441
-</td>
-<td style="text-align:right;">
-0.3480267
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-1.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-lwage
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1.62326844
-</td>
-<td style="text-align:right;">
-0.5315382
-</td>
-<td style="text-align:right;">
--0.6348783
-</td>
-<td style="text-align:right;">
-1.202972
-</td>
-<td style="text-align:right;">
-1.536867
-</td>
-<td style="text-align:right;">
-1.928619
-</td>
-<td style="text-align:right;">
-3.218076
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-expersq
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-473.43536122
-</td>
-<td style="text-align:right;">
-616.0447716
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-25.000000
-</td>
-<td style="text-align:right;">
-182.500000
-</td>
-<td style="text-align:right;">
-676.000000
-</td>
-<td style="text-align:right;">
-2601.000000
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-numeric
-</td>
-<td style="text-align:right;">
-tenursq
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-78.15019011
-</td>
-<td style="text-align:right;">
-199.4346635
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.000000
-</td>
-<td style="text-align:right;">
-4.000000
-</td>
-<td style="text-align:right;">
-49.000000
-</td>
-<td style="text-align:right;">
-1936.000000
+24
 </td>
 </tr>
 </tbody>
 </table>
+<pre class="r"><code># Realizamos la primera visualización de los datos
+paged_table(skim_without_charts(data_1))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["skim_type"],"name":[1],"type":["chr"],"align":["left"]},{"label":["skim_variable"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n_missing"],"name":[3],"type":["int"],"align":["right"]},{"label":["complete_rate"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["numeric.mean"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["numeric.sd"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["numeric.p0"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["numeric.p25"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["numeric.p50"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["numeric.p75"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["numeric.p100"],"name":[11],"type":["dbl"],"align":["right"]}],"data":[{"1":"numeric","2":"wage","3":"0","4":"1","5":"5.89610267","6":"3.6930860","7":"0.5300000","8":"3.330000","9":"4.650000","10":"6.880000","11":"24.980000","_rn_":"1"},{"1":"numeric","2":"educ","3":"0","4":"1","5":"12.56273764","6":"2.7690224","7":"0.0000000","8":"12.000000","9":"12.000000","10":"14.000000","11":"18.000000","_rn_":"2"},{"1":"numeric","2":"exper","3":"0","4":"1","5":"17.01711027","6":"13.5721596","7":"1.0000000","8":"5.000000","9":"13.500000","10":"26.000000","11":"51.000000","_rn_":"3"},{"1":"numeric","2":"tenure","3":"0","4":"1","5":"5.10456274","6":"7.2244623","7":"0.0000000","8":"0.000000","9":"2.000000","10":"7.000000","11":"44.000000","_rn_":"4"},{"1":"numeric","2":"nonwhite","3":"0","4":"1","5":"0.10266160","6":"0.3038053","7":"0.0000000","8":"0.000000","9":"0.000000","10":"0.000000","11":"1.000000","_rn_":"5"},{"1":"numeric","2":"female","3":"0","4":"1","5":"0.47908745","6":"0.5000380","7":"0.0000000","8":"0.000000","9":"0.000000","10":"1.000000","11":"1.000000","_rn_":"6"},{"1":"numeric","2":"married","3":"0","4":"1","5":"0.60836502","6":"0.4885804","7":"0.0000000","8":"0.000000","9":"1.000000","10":"1.000000","11":"1.000000","_rn_":"7"},{"1":"numeric","2":"numdep","3":"0","4":"1","5":"1.04372624","6":"1.2618915","7":"0.0000000","8":"0.000000","9":"1.000000","10":"2.000000","11":"6.000000","_rn_":"8"},{"1":"numeric","2":"smsa","3":"0","4":"1","5":"0.72243346","6":"0.4482246","7":"0.0000000","8":"0.000000","9":"1.000000","10":"1.000000","11":"1.000000","_rn_":"9"},{"1":"numeric","2":"northcen","3":"0","4":"1","5":"0.25095057","6":"0.4339728","7":"0.0000000","8":"0.000000","9":"0.000000","10":"0.750000","11":"1.000000","_rn_":"10"},{"1":"numeric","2":"south","3":"0","4":"1","5":"0.35551331","6":"0.4791242","7":"0.0000000","8":"0.000000","9":"0.000000","10":"1.000000","11":"1.000000","_rn_":"11"},{"1":"numeric","2":"west","3":"0","4":"1","5":"0.16920152","6":"0.3752867","7":"0.0000000","8":"0.000000","9":"0.000000","10":"0.000000","11":"1.000000","_rn_":"12"},{"1":"numeric","2":"construc","3":"0","4":"1","5":"0.04562738","6":"0.2088743","7":"0.0000000","8":"0.000000","9":"0.000000","10":"0.000000","11":"1.000000","_rn_":"13"},{"1":"numeric","2":"ndurman","3":"0","4":"1","5":"0.11406844","6":"0.3181970","7":"0.0000000","8":"0.000000","9":"0.000000","10":"0.000000","11":"1.000000","_rn_":"14"},{"1":"numeric","2":"trcommpu","3":"0","4":"1","5":"0.04372624","6":"0.2046800","7":"0.0000000","8":"0.000000","9":"0.000000","10":"0.000000","11":"1.000000","_rn_":"15"},{"1":"numeric","2":"trade","3":"0","4":"1","5":"0.28707224","6":"0.4528262","7":"0.0000000","8":"0.000000","9":"0.000000","10":"1.000000","11":"1.000000","_rn_":"16"},{"1":"numeric","2":"services","3":"0","4":"1","5":"0.10076046","6":"0.3012978","7":"0.0000000","8":"0.000000","9":"0.000000","10":"0.000000","11":"1.000000","_rn_":"17"},{"1":"numeric","2":"profserv","3":"0","4":"1","5":"0.25855513","6":"0.4382574","7":"0.0000000","8":"0.000000","9":"0.000000","10":"1.000000","11":"1.000000","_rn_":"18"},{"1":"numeric","2":"profocc","3":"0","4":"1","5":"0.36692015","6":"0.4824233","7":"0.0000000","8":"0.000000","9":"0.000000","10":"1.000000","11":"1.000000","_rn_":"19"},{"1":"numeric","2":"clerocc","3":"0","4":"1","5":"0.16730038","6":"0.3735991","7":"0.0000000","8":"0.000000","9":"0.000000","10":"0.000000","11":"1.000000","_rn_":"20"},{"1":"numeric","2":"servocc","3":"0","4":"1","5":"0.14068441","6":"0.3480267","7":"0.0000000","8":"0.000000","9":"0.000000","10":"0.000000","11":"1.000000","_rn_":"21"},{"1":"numeric","2":"lwage","3":"0","4":"1","5":"1.62326844","6":"0.5315382","7":"-0.6348783","8":"1.202972","9":"1.536867","10":"1.928619","11":"3.218076","_rn_":"22"},{"1":"numeric","2":"expersq","3":"0","4":"1","5":"473.43536122","6":"616.0447716","7":"1.0000000","8":"25.000000","9":"182.500000","10":"676.000000","11":"2601.000000","_rn_":"23"},{"1":"numeric","2":"tenursq","3":"0","4":"1","5":"78.15019011","6":"199.4346635","7":"0.0000000","8":"0.000000","9":"4.000000","10":"49.000000","11":"1936.000000","_rn_":"24"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>para nuestro primer ejemplo, realizaremos un modelo simple, el cual
+sólo tendría un regresor para la estimación, el modelo se ve de la
+siguiente forma:</p>
+<p><span class="math display">\[
+wage_i = \beta_0 + \beta_1 educ_i + u_i
+\]</span></p>
+<p>Siendo <span class="math inline">\(wage_i\)</span> el salario
+promedio por hora que ganan los trabajadores de la muestra y <span
+class="math inline">\(educ_i\)</span> son los años de educación que
+posee cada uno de los trabajadores. El objetivo de este primer modelo
+básico es visualizar el efecto que posee los años de educación sobre la
+renta promedio por hora, teniendo como teoría el hecho de que “ha mayor
+nivel de educación, mayor salario promedio/hora recibe el
+trabajador”.</p>
+<p><br></p>
+<p>El modelo se representa de la siguiente forma:</p>
+<pre class="r"><code># Generamos el Modelo
+modelo_1 &lt;- lm(formula = wage ~ educ, data = data_1)
+
+# Visualizamos el modelo y sus resultados
+stargazer(modelo_1,header = FALSE, type = &quot;html&quot;,title = &quot;Resultados Modelo 1&quot;,align = TRUE)</code></pre>
+<table style="text-align:center">
+<caption>
+<strong>Resultados Modelo 1</strong>
+</caption>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="1" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+wage
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+educ
+</td>
+<td>
+0.541<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.053)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+-0.905
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.685)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+526
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.165
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.163
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error
+</td>
+<td>
+3.378 (df = 524)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic
+</td>
+<td>
+103.363<sup>***</sup> (df = 1; 524)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td style="text-align:right">
+<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05;
+<sup></strong></em></sup>p&lt;0.01
+</td>
+</tr>
+</table>
+</div>
 </div>
 
 <p>Copyright &copy; 2024 Matías Vicuña Cofré, Todos los Derechos Reservados.</p>

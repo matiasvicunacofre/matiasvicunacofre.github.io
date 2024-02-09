@@ -1,5 +1,5 @@
 ---
-title: "**Linear Regression**"
+title: "**Regresión Lineal e Interpretaciones**"
 author: "Matías Vicuña Cofré"
 date: "última actualización: `r Sys.Date()`"
 
@@ -40,11 +40,14 @@ output:
       collapse: true
       smooth_scroll: true
 ---
+<div style="text-align: justify">
 
 # **Configuraciones Iniciales**
 
 ```{r setup, include=TRUE, message=FALSE,warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.width = 8.5, fig.height = 9, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",
+                      fig.width = 8.5, fig.height = 9, message = FALSE, 
+                      warning = FALSE, results = "asis")
 #############################################################################
 # Portfolio Opimization
 # Author: Matías Vicuña Cofré
@@ -56,7 +59,7 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
   {
     # Lista de paquetes que quieres verificar
     paquetes <- c("tidyverse","skimr","stargazer","wooldridge",
-                  "lmtest","car","formattable")
+                  "lmtest","car","formattable","rmarkdown")
     
     # Verificar e instalar paquetes que no estén instalados
     for (paquete in paquetes) {
@@ -75,6 +78,7 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
       library(lmtest) # Test de modelos de regresión linear
       library(car) # Paquete para regresión linear
       library(formattable) # Darle formato HTML a las tablas
+      library(rmarkdown) # Formato rmarkdown
     })
   }
   # Configuraciones Entorno de Trabajo
@@ -94,15 +98,47 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
 }
 ```
 
-# **Regresión Lineal**
+---
 
+# **Regresión Lineal**
+<br>
+
+### **Cargando la muestra**
 Para comenzar con el modelo de regresión, usaremos la base de datos *wage1*, el cual se encuentra en el paquete `wooldridge` (para mas detalle del paquete, sus bases y descripciones, haz clic [aquí](https://cran.r-project.org/web/packages/wooldridge/wooldridge.pdf)), con ello ya expuesto, procedemos con la carga de la base y su primera visualización estadística de la misma.
+
 
 ```{r data_1}
 # Cargamos la data desde el paquete Wooldrige
 data_1 <- wooldridge::wage1
 
+# Visualizamos la dimensión de la muestra
+dim_d1 <- t(as_tibble(dim(data_1)))
+dim_d1 <- as_tibble(dim_d1,rownames = NULL)
+colnames(dim_d1) <- c("Filas","Columnas")
+formattable(dim_d1)
+```
+
+```{r data_1_vis}
 # Realizamos la primera visualización de los datos
-formattable(skim_without_charts(data_1))
+paged_table(skim_without_charts(data_1))
+```
+
+para nuestro primer ejemplo, realizaremos un modelo simple, el cual sólo tendría un regresor para la estimación, el modelo se ve de la siguiente forma:
+
+$$
+wage_i = \beta_0 + \beta_1 educ_i + u_i
+$$
+
+Siendo $wage_i$ el salario promedio por hora que ganan los trabajadores de la muestra y $educ_i$ son los años de educación que posee cada uno de los trabajadores. El objetivo de este primer modelo básico es visualizar el efecto que posee los años de educación sobre la renta promedio por hora, teniendo como teoría el hecho de que "ha mayor nivel de educación, mayor salario promedio/hora recibe el trabajador".
+
+<br>
+
+El modelo se representa de la siguiente forma:
+```{r modelo_db1}
+# Generamos el Modelo
+modelo_1 <- lm(formula = wage ~ educ, data = data_1)
+
+# Visualizamos el modelo y sus resultados
+stargazer(modelo_1,header = FALSE, type = "html",title = "Resultados Modelo 1",align = TRUE)
 ```
 

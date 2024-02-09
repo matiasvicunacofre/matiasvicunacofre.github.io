@@ -37,13 +37,14 @@ output:
     df_ paged: TRUE
     toc: TRUE
     toc_float:
-      collapse: true
-      smooth_scroll: true
+      collapse: TRUE
+      smooth_scroll: TRUE
 ---
-
 # **Configuraciones Iniciales**
 
+<div style="text-align: justify">
 Antes de comenzar con nuestra optimización de cartera, utilizando la teoría del portafolio de Markowitz, designaremos las configuraciones iniciales para el trabajo, comenzando con la verificación, instalación y carga de los paquetes a utilizar para el caso, luego de ello, al mismo tiempo hacemos unas configuraciones aparte para el entorno de trabajo propiamente tal (no es necesario para el markdown, sin embargo, para aquellos que quieran replicar el modelo, les sea útil), con esto todo
+</div>
 
 ```{r setup, include=TRUE, message=FALSE,warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.width = 8.5, fig.height = 9, message = FALSE, warning = FALSE)
@@ -106,11 +107,17 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = "center",fig.widt
 
 ---
 
-# **Comenzando el Modelo**
+# **Indicador de Mercado y Tasa libre de Riesgo**
 
+### **S&P 500**
+
+<div style="text-align: justify">
 Luego de las configuraciones, generamos la primera muestra de datos a utilizar, usando el paquete `tseries`, como primer ejemplo, utilizaremos el índice S&P 500 Dow Jones, al cuál observaremo su precio histórico desde Enero del 2000 hasta el 31 de diciembre del 2023, usaremos su ticket de Yahoo Finance (^GSPC) (veáse más detalle del índice [*aquí*](https://finance.yahoo.com/quote/%5EGSPC?p=%5EGSPC)).
+</div>
 
+<div style="text-align: justify">
 Junto con ello, usamos el paquete `skimr` para realizar un análisis estadístico básico de la serie con los precios históricos, teniendo su media, percentiles y demás detalles.
+</div>
 
 ```{r SP_load}
 # Preambulo (Rango de fechas a considerar para medición)
@@ -140,12 +147,11 @@ SP_500 <- SP500 %>%
 formattable(skim_without_charts(SP_500$Precio))
 ```
 
-\vspace{10mm}
-
+<div style="text-align: justify">
 Ya teniendo la serie cargada, generamos ahora un pequeño gráfico que entrega el rendimiento histórico desde el 2000 al 2023 del precio ajustado del indicador.
 
 Para ello, hacemos uso de un recursos super relevantes para el análisis y visualización de datos: `ggplot2`, con este paquete y usando de adicional para la interacción el paquete `plotly`, tenemos un gráfico que nos entrega en detalle e intuitivamente el desarrollo de este mercado Norteamericano.
-
+</div>
 
 ```{r plot_SP500, fig.height=5}
 # Generamos el gráfico
@@ -171,7 +177,11 @@ int_plot_SP500 <- SP_500 %>%
 ggplotly(int_plot_SP500)
 ```
 
+### **Bono del Tesoro Norteamericano**
+
+<div style="text-align: justify">
 Además de tener los datos de este índice de mercado norteamericano, necesitamos tener un instrumento que, siguiendo la teoría de Markowitz, sea el que simule nuestro rendimiento "libre de riesgo" (*risk free*), de este modo, y siguiendo la dinámica de este ejercicio, usaremos el *Treasury Yield 30 Years*, el cuál será nuesrtro indicador histórico que seguirá la idea de tasa "segura" de ganar. Este indicador, al igual que todos los demás, son recuperados directamente desde 
+</div>
 
 ```{r var_risk_free, message=FALSE,warning=FALSE}
 # Cargamos los datos desde Yahoo Finance
@@ -220,6 +230,10 @@ int_plot_risk_free <- risk_free %>%
 ggplotly(int_plot_risk_free)
 ```
 
+---
+
+# **Consolidando la cartera**
+
 Siguiendo con esta ídea, ahora generaremos una cartera, la cuál se compondrá de a lo menos 7 tipos de empresas, para este ejemplo, usaremos empresas que cotizan en la bolsa de Nueva York, especificamente serán las siguientes:
 
 - Coca Cola (KO)
@@ -231,8 +245,6 @@ Siguiendo con esta ídea, ahora generaremos una cartera, la cuál se compondrá 
 - Amazon (AMZN)
 
 Con este listado de empresas, ahora construiremos nuestra base.
-
-# **Consolidando la cartera**
 
 ```{r Portafolio_Generacion, message=FALSE}
 # Datos Previos
@@ -294,7 +306,10 @@ int_plot_portafolio <- ggplot(portafolio_long,
 ggplotly(int_plot_portafolio)
 ```
 
-Posterior a esto, crearemos los beneficios de cada serie (incluida el S&P 500), añadiendo además una normalización logartímica para reescalar la muestra.
+Posterior a esto, crearemos los beneficios de cada serie (incluida el S&P 500 y el bono del tesoro), añadiendo además una normalización logartímica para reescalar la muestra.
+
+
+**Retornos para cada serie**
 
 ```{r returns_port}
 # Calculamos los rendimientos de la cartera
@@ -401,14 +416,14 @@ generate_heat_map <- function(correlationMatrix, title)
   )
 }
 
-generate_heat_map(correlacion, "Correlaciones Empresas")
+generate_heat_map(correlacion, "Mapa Correlación Cartera")
 ```
 
 Con este análisis previo tenemos la siguiente información
 
 ---
 
-# **Creando el Modelo**
+# **El Modelo**
 
 ```{r Modelo_MV, message=FALSE, warning=FALSE}
 # Especificaciones del Modelo
@@ -454,3 +469,4 @@ monteCarloPoints(Frontera,
 ```
 
 ---
+

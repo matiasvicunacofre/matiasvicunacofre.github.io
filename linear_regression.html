@@ -395,9 +395,8 @@ Interpretaciones</strong></h1>
 </div>
 
 
-<div style="text-align: justify">
-
-<div id="configuraciones-iniciales" class="section level1">
+<div id="configuraciones-iniciales" class="section level1"
+style="text-align: justify">
 <h1><strong>Configuraciones Iniciales</strong></h1>
 <pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, include = TRUE, fig.align = &quot;center&quot;,
                       fig.width = 8.5, fig.height = 9, message = FALSE, 
@@ -451,13 +450,14 @@ Interpretaciones</strong></h1>
   }
 }</code></pre>
 <div style="page-break-after: always;"></div>
-<hr />
 </div>
+<hr />
 <div id="regresión-lineal" class="section level1">
 <h1><strong>Regresión Lineal</strong></h1>
 <p><br></p>
 <div id="cargando-la-muestra" class="section level3">
 <h3><strong>Cargando la muestra</strong></h3>
+<div style="text-align: justify">
 <p>Para comenzar con el modelo de regresión, usaremos la base de datos
 <em>wage1</em>, el cual se encuentra en el paquete
 <code>wooldridge</code> (para mas detalle del paquete, sus bases y
@@ -465,6 +465,7 @@ descripciones, haz clic <a
 href="https://cran.r-project.org/web/packages/wooldridge/wooldridge.pdf">aquí</a>),
 con ello ya expuesto, procedemos con la carga de la base y su primera
 visualización estadística de la misma.</p>
+</div>
 <pre class="r"><code># Cargamos la data desde el paquete Wooldrige
 data_1 &lt;- wooldridge::wage1
 
@@ -505,9 +506,10 @@ paged_table(skim_without_charts(data_1))</code></pre>
 <p>para nuestro primer ejemplo, realizaremos un modelo simple, el cual
 sólo tendría un regresor para la estimación, el modelo se ve de la
 siguiente forma:</p>
-<p><span class="math display">\[
+<span class="math display">\[
 wage_i = \beta_0 + \beta_1 educ_i + u_i
-\]</span></p>
+\]</span>
+<div style="text-align: justify">
 <p>Siendo <span class="math inline">\(wage_i\)</span> el salario
 promedio por hora que ganan los trabajadores de la muestra y <span
 class="math inline">\(educ_i\)</span> son los años de educación que
@@ -516,6 +518,7 @@ básico es visualizar el efecto que posee los años de educación sobre la
 renta promedio por hora, teniendo como teoría el hecho de que “ha mayor
 nivel de educación, mayor salario promedio/hora recibe el
 trabajador”.</p>
+</div>
 <p><br></p>
 <p>El modelo se representa de la siguiente forma:</p>
 <pre class="r"><code># Generamos el Modelo
